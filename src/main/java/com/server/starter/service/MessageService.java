@@ -20,7 +20,6 @@ package com.server.starter.service;
 import com.server.starter.dto.MessageDTO;
 import com.server.starter.vo.MessageVO;
 import org.springframework.data.domain.Page;
-import com.server.starter.service.ServletBasicService;
 
 /**
  * message service.

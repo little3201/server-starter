@@ -20,7 +20,6 @@ package com.server.starter.service;
 import com.server.starter.dto.DictionaryDTO;
 import com.server.starter.vo.DictionaryVO;
 import org.springframework.data.domain.Page;
-import com.server.starter.service.ServletBasicService;
 
 import java.util.List;
 

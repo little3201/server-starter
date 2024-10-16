@@ -20,10 +20,10 @@ import com.server.starter.domain.Privilege;
 import com.server.starter.repository.PrivilegeRepository;
 import com.server.starter.repository.RolePrivilegesRepository;
 import com.server.starter.service.PrivilegeService;
+import com.server.starter.service.ServletAbstractTreeNodeService;
 import com.server.starter.tree.TreeNode;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import com.server.starter.service.ServletAbstractTreeNodeService;
 
 import java.util.Collections;
 import java.util.HashSet;

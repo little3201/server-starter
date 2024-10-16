@@ -17,10 +17,10 @@
 package com.server.starter.domain;
 
 
+import com.server.starter.audit.AuditMetadata;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import com.server.starter.audit.AuditMetadata;
 
 import java.time.Instant;
 

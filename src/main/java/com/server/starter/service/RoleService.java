@@ -19,7 +19,6 @@ package com.server.starter.service;
 import com.server.starter.dto.RoleDTO;
 import com.server.starter.vo.RoleVO;
 import org.springframework.data.domain.Page;
-import com.server.starter.service.ServletBasicService;
 
 /**
  * role service.

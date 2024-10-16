@@ -97,6 +97,60 @@ public class TreeNode {
     }
 
     /**
+     * Retrieves the ID of the parent (superior) node, or null if the node is a root node.
+     *
+     * @return The superior node ID, or null for root nodes.
+     */
+    public Long getSuperiorId() {
+        return superiorId;
+    }
+
+    /**
+     * Retrieves the unique identifier of the node.
+     *
+     * @return The node ID.
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * Retrieves the name of the node.
+     *
+     * @return The node name.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Retrieves the map of expandable properties for the node.
+     *
+     * @return A map containing additional, expandable properties.
+     */
+    public Map<String, Object> getMeta() {
+        return meta;
+    }
+
+    /**
+     * Retrieves the list of child nodes.
+     *
+     * @return A list of child nodes, or an empty list if the node has no children.
+     */
+    public List<TreeNode> getChildren() {
+        return children;
+    }
+
+    /**
+     * Sets the list of child nodes for the current node.
+     *
+     * @param children A list of child nodes.
+     */
+    public void setChildren(List<TreeNode> children) {
+        this.children = children;
+    }
+
+    /**
      * Builder class for creating instances of {@link TreeNode}.
      *
      * <p>Allows for the construction of a {@link TreeNode} by setting properties incrementally.</p>
@@ -169,60 +223,5 @@ public class TreeNode {
         public TreeNode build() {
             return new TreeNode(id, name, superiorId, children, meta);
         }
-    }
-
-
-    /**
-     * Retrieves the ID of the parent (superior) node, or null if the node is a root node.
-     *
-     * @return The superior node ID, or null for root nodes.
-     */
-    public Long getSuperiorId() {
-        return superiorId;
-    }
-
-    /**
-     * Retrieves the unique identifier of the node.
-     *
-     * @return The node ID.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Retrieves the name of the node.
-     *
-     * @return The node name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Retrieves the map of expandable properties for the node.
-     *
-     * @return A map containing additional, expandable properties.
-     */
-    public Map<String, Object> getMeta() {
-        return meta;
-    }
-
-    /**
-     * Retrieves the list of child nodes.
-     *
-     * @return A list of child nodes, or an empty list if the node has no children.
-     */
-    public List<TreeNode> getChildren() {
-        return children;
-    }
-
-    /**
-     * Sets the list of child nodes for the current node.
-     *
-     * @param children A list of child nodes.
-     */
-    public void setChildren(List<TreeNode> children) {
-        this.children = children;
     }
 }

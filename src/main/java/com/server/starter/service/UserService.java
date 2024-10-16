@@ -19,7 +19,6 @@ package com.server.starter.service;
 import com.server.starter.dto.UserDTO;
 import com.server.starter.vo.UserVO;
 import org.springframework.data.domain.Page;
-import com.server.starter.service.ServletBasicService;
 
 /**
  * user service.
