@@ -1,0 +1,22 @@
+server:
+  port: 8768
+
+spring:
+  application:
+    name: server-starter
+
+  profiles:
+    active: dev
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+jwt:
+  private.key: classpath:app.key
+  public.key: classpath:app.pub
