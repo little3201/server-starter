@@ -18,23 +18,21 @@
 package com.server.starter.domain;
 
 import com.server.starter.audit.AuditMetadata;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * model class for dictionary.
  *
  * @author wq li
  */
-@Entity
+
 @Table(name = "dictionaries")
 public class Dictionary extends AuditMetadata {
 
-    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "superior_id")
+    @Column("superior_id")
     private Long superiorId;
 
     private String description;

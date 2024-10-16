@@ -17,21 +17,18 @@
 package com.server.starter.domain;
 
 import com.server.starter.audit.AuditMetadata;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * model class for role.
  *
  * @author wq li
  */
-@Entity
+
 @Table(name = "roles")
 public class Role extends AuditMetadata {
 
 
-    @Column(name = "name", nullable = false, unique = true, length = 50)
     private String name;
 
     /**

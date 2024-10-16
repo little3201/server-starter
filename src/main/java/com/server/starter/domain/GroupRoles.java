@@ -16,32 +16,33 @@
  */
 package com.server.starter.domain;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * model class for group roles.
  *
  * @author wq li
  */
-@Entity
+
 @Table(name = "group_roles")
 public class GroupRoles {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     /**
      * group 主键
      */
-    @Column(name = "group_id", nullable = false)
+    @Column("group_id")
     private Long groupId;
 
     /**
      * role 主键
      */
-    @Column(name = "role_id", nullable = false)
+    @Column("role_id")
     private Long roleId;
 
 

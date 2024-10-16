@@ -18,9 +18,8 @@ package com.server.starter.domain;
 
 
 import com.server.starter.audit.AuditMetadata;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
 
@@ -29,32 +28,27 @@ import java.time.Instant;
  *
  * @author wq li
  */
-@Entity
 @Table(name = "users")
 public class User extends AuditMetadata {
 
-    @Column(name = "username", nullable = false, unique = true, length = 50)
     private String username;
 
-    @Column(name = "full_name", length = 50)
+    @Column("full_name")
     private String fullName;
 
-    @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    @Column(name = "email", length = 50)
     private String email;
 
-    @Column(name = "avatar", length = 100)
     private String avatar;
 
-    @Column(name = "account_expires_at")
+    @Column("account_expires_at")
     private Instant accountExpiresAt;
 
-    @Column(name = "account_non_locked")
+    @Column("account_non_locked")
     private boolean accountNonLocked;
 
-    @Column(name = "credentials_expires_at")
+    @Column("credentials_expires_at")
     private Instant credentialsExpiresAt;
 
     /**

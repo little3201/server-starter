@@ -17,26 +17,25 @@
 package com.server.starter.domain;
 
 import com.server.starter.audit.AuditMetadata;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * model class for privilege.
  *
  * @author wq li
  */
-@Entity
+
 @Table(name = "privileges")
 public class Privilege extends AuditMetadata {
 
 
-    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     /**
      * 上级主键
      */
+    @Column("superior_id")
     private Long superiorId;
 
     private String path;

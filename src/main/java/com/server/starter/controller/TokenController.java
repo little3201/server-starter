@@ -1,6 +1,7 @@
 package com.server.starter.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -24,7 +25,7 @@ public class TokenController {
     JwtEncoder encoder;
 
     @PostMapping("/token")
-    public String token(Authentication authentication) {
+    public ResponseEntity<String> token(Authentication authentication) {
         Instant now = Instant.now();
         long expiry = 36000L;
         // @formatter:off
@@ -39,7 +40,9 @@ public class TokenController {
                 .claim("scope", scope)
                 .build();
         // @formatter:on
-        return this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        String jwtToken = this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+
+        return ResponseEntity.ok(jwtToken);
     }
 
 }

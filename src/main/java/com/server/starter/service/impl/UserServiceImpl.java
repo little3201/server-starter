@@ -61,17 +61,19 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(pageable).map(this::convert);
     }
 
+    @Override
+    public UserVO findByUsername(String username) {
+        Assert.hasText(username, "username must not be blank.");
+        return userRepository.findByUsername(username).map(this::convert).orElse(null);
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public UserVO fetch(Long id) {
         Assert.notNull(id, "id must not be null.");
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null) {
-            return null;
-        }
-        return this.convert(user);
+        return userRepository.findById(id).map(this::convert).orElse(null);
     }
 
     /**

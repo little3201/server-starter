@@ -16,6 +16,7 @@
 | spring-boot-starter-oauth2-resource-server | 接口安全  |
 |        spring-boot-starter-actuator        | 健康监控  |
 |       micrometer-registry-prometheus       | 监控接口  |
-|              Spring Data Jpa               | 数据访问  |
+|              Spring Data Jdbc              | 数据访问  |
+|               Mybatis Spring               | 数据访问  |
 |                  postgres                  | 数据存储  |
 |                  caffeine                  | 内存缓存  |

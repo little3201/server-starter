@@ -17,20 +17,19 @@
 package com.server.starter.domain;
 
 import com.server.starter.audit.AuditMetadata;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * model class for group.
  *
  * @author wq li
  */
-@Entity
+
 @Table(name = "groups")
 public class Group extends AuditMetadata {
 
-    @Column(name = "group_name", nullable = false, length = 50)
+    @Column("group_name")
     private String name;
 
     private Long superiorId;

@@ -21,6 +21,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * user repository.
  *
@@ -29,6 +31,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long>,
         PagingAndSortingRepository<User, Long> {
+
+    Optional<User> findByUsername(String username);
 
     /**
      * 是否存在

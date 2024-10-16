@@ -19,40 +19,38 @@ package com.server.starter.domain;
 
 
 import com.server.starter.audit.AuditMetadata;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * model class for access log.
  *
  * @author wq li
  */
-@Entity
+
 @Table(name = "access_logs")
 public class AccessLog extends AuditMetadata {
 
     private String url;
 
-    @Column(name = "http_method", length = 10)
+    @Column("http_method")
     private String httpMethod;
 
     private String ip;
 
-    @Column(name = "location", length = 50)
     private String location;
 
     private String params;
 
     private String body;
 
-    @Column(name = "status_code")
+    @Column("status_code")
     private Integer statusCode;
 
-    @Column(name = "response_times")
+    @Column("response_times")
     private Long responseTimes;
 
-    @Column(name = "response_message")
+    @Column("response_message")
     private String responseMessage;
 
 

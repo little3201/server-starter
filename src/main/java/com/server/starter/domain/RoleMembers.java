@@ -16,32 +16,32 @@
  */
 package com.server.starter.domain;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * model class for role members.
  *
  * @author wq li
  */
-@Entity
+
 @Table(name = "role_members")
 public class RoleMembers {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     /**
      * role主键
      */
-    @Column(name = "role_id", nullable = false)
+    @Column("role_id")
     private Long roleId;
 
     /**
      * 用户名
      */
-    @Column(name = "username", nullable = false)
     private String username;
 
 

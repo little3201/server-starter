@@ -18,41 +18,33 @@
 package com.server.starter.domain;
 
 import com.server.starter.audit.AuditMetadata;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * model class for message.
  *
  * @author wq li
  */
-@Entity
+
 @Table(name = "messages")
 public class Message extends AuditMetadata {
 
-
-    @Column(name = "title", nullable = false)
     private String title;
 
     /**
      * 内容
      */
-    @Column(name = "content", length = 1000)
     private String content;
 
     /**
      * 是否已读
      */
-    @Column(name = "read", nullable = false)
     private boolean read;
 
     /**
      * 接收人
      */
-    @Column(name = "receiver", nullable = false, length = 50)
     private String receiver;
-
 
     /**
      * <p>Getter for the field <code>title</code>.</p>

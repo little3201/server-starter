@@ -19,9 +19,8 @@ package com.server.starter.domain;
 
 
 import com.server.starter.audit.AuditMetadata;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.Instant;
 
@@ -30,7 +29,7 @@ import java.time.Instant;
  *
  * @author wq li
  */
-@Entity
+
 @Table(name = "operation_logs")
 public class OperationLog extends AuditMetadata {
 
@@ -38,33 +37,29 @@ public class OperationLog extends AuditMetadata {
 
     private String ip;
 
-    @Column(name = "location", length = 50)
     private String location;
 
-    @Column(name = "content", length = 1000)
     private String content;
 
-    @Column(name = "user_agent")
+    @Column("user_agent")
     private String userAgent;
 
-    @Column(name = "status_code")
+    @Column("status_code")
     private Integer statusCode;
 
-    @Column(name = "operated_time")
+    @Column("operated_time")
     private Instant operatedTime;
 
     private String referer;
 
-    @Column(name = "session_id", length = 50)
+    @Column("session_id")
     private String sessionId;
 
-    @Column(name = "device_type", length = 20)
+    @Column("device_type")
     private String deviceType;
 
-    @Column(name = "os", length = 50)
     private String os;
 
-    @Column(name = "browser", length = 50)
     private String browser;
 
 
