@@ -17,9 +17,10 @@
 
 package com.server.starter.service.impl;
 
-import com.server.starter.domain.Privilege;
-import com.server.starter.repository.PrivilegeRepository;
-import com.server.starter.tree.TreeNode;
+import com.server.starter.system.domain.Privilege;
+import com.server.starter.system.repository.PrivilegeRepository;
+import com.server.starter.system.service.impl.PrivilegeServiceImpl;
+import com.server.starter.domain.TreeNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

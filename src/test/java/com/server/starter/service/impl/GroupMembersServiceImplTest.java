@@ -17,8 +17,9 @@
 
 package com.server.starter.service.impl;
 
-import com.server.starter.domain.GroupMembers;
-import com.server.starter.repository.GroupMembersRepository;
+import com.server.starter.system.domain.GroupMembers;
+import com.server.starter.system.repository.GroupMembersRepository;
+import com.server.starter.system.service.impl.GroupMembersServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

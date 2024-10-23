@@ -17,9 +17,10 @@
 package com.server.starter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.starter.dto.UserDTO;
-import com.server.starter.service.UserService;
-import com.server.starter.vo.UserVO;
+import com.server.starter.system.controller.UserController;
+import com.server.starter.system.dto.UserDTO;
+import com.server.starter.system.service.UserService;
+import com.server.starter.system.vo.UserVO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

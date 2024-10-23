@@ -22,7 +22,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jdbc.repository.config.EnableJdbcAuditing;
-import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
 import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
@@ -34,7 +33,6 @@ import static org.springframework.data.web.config.EnableSpringDataWebSupport.Pag
  */
 @Configuration(proxyBeanMethods = false)
 @EnableJdbcAuditing
-@EnableJdbcRepositories(basePackages = "com.server.starter.**.repository")
 @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class AuditingConfiguration {
 

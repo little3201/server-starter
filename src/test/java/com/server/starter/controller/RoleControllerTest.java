@@ -18,12 +18,13 @@ package com.server.starter.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.starter.domain.RolePrivileges;
-import com.server.starter.dto.RoleDTO;
-import com.server.starter.service.RoleMembersService;
-import com.server.starter.service.RolePrivilegesService;
-import com.server.starter.service.RoleService;
-import com.server.starter.vo.RoleVO;
+import com.server.starter.system.controller.RoleController;
+import com.server.starter.system.domain.RolePrivileges;
+import com.server.starter.system.dto.RoleDTO;
+import com.server.starter.system.service.RoleMembersService;
+import com.server.starter.system.service.RolePrivilegesService;
+import com.server.starter.system.service.RoleService;
+import com.server.starter.system.vo.RoleVO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

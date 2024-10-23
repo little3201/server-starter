@@ -18,9 +18,10 @@
 package com.server.starter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.starter.service.PrivilegeService;
-import com.server.starter.service.RolePrivilegesService;
-import com.server.starter.tree.TreeNode;
+import com.server.starter.system.controller.PrivilegeController;
+import com.server.starter.system.service.PrivilegeService;
+import com.server.starter.system.service.RolePrivilegesService;
+import com.server.starter.domain.TreeNode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;

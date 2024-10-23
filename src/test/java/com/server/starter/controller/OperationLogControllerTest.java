@@ -17,8 +17,9 @@
 
 package com.server.starter.controller;
 
-import com.server.starter.service.OperationLogService;
-import com.server.starter.vo.OperationLogVO;
+import com.server.starter.system.controller.OperationLogController;
+import com.server.starter.system.service.OperationLogService;
+import com.server.starter.system.vo.OperationLogVO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

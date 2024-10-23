@@ -16,10 +16,11 @@
  */
 package com.server.starter.service.impl;
 
-import com.server.starter.domain.User;
-import com.server.starter.dto.UserDTO;
-import com.server.starter.repository.UserRepository;
-import com.server.starter.vo.UserVO;
+import com.server.starter.system.domain.User;
+import com.server.starter.system.dto.UserDTO;
+import com.server.starter.system.repository.UserRepository;
+import com.server.starter.system.service.impl.UserServiceImpl;
+import com.server.starter.system.vo.UserVO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

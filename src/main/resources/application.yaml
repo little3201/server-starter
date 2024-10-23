@@ -17,9 +17,6 @@ management:
     tags:
       application: ${spring.application.name}
 
-mybatis:
-  mapper-locations: classpath*:/mapper/*.xml
-
 jwt:
   private.key: classpath:app.key
   public.key: classpath:app.pub
