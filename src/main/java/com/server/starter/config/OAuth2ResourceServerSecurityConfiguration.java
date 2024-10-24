@@ -80,7 +80,10 @@ public class OAuth2ResourceServerSecurityConfiguration {
 
     @Bean
     UserDetailsService userDetailsService(DataSource dataSource) {
-        return new JdbcUserDetailsManager(dataSource);
+        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+        // enable groups
+        jdbcUserDetailsManager.setEnableGroups(true);
+        return jdbcUserDetailsManager;
     }
 
     @Bean

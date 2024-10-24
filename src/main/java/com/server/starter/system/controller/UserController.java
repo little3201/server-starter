@@ -25,9 +25,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 /**
  * user controller.
@@ -61,6 +62,7 @@ public class UserController {
      * @param username   username
      * @return 如果查询到数据，返回查询到的分页后的信息列表，否则返回空
      */
+    @PreAuthorize("hasAuthority('SCOPE_user:read')")
     @GetMapping
     public ResponseEntity<Page<UserVO>> retrieve(@RequestParam int page, @RequestParam int size,
                                                  String sortBy, boolean descending, String username) {
@@ -80,6 +82,7 @@ public class UserController {
      * @param id 主键
      * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
      */
+    @PreAuthorize("hasAuthority('SCOPE_user:read')")
     @GetMapping("/{id}")
     public ResponseEntity<UserVO> fetch(@PathVariable Long id) {
         UserVO vo;
@@ -98,10 +101,10 @@ public class UserController {
      * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
      */
     @GetMapping("/me")
-    public ResponseEntity<UserVO> me(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<UserVO> me(Principal principal) {
         UserVO vo;
         try {
-            vo = userService.findByUsername(userDetails.getUsername());
+            vo = userService.findByUsername(principal.getName());
         } catch (Exception e) {
             logger.info("Fetch user occurred an error: ", e);
             return ResponseEntity.noContent().build();
@@ -115,6 +118,7 @@ public class UserController {
      * @param dto 要修改的数据
      * @return 如果添加数据成功，返回添加后的信息，否则返回417状态码
      */
+    @PreAuthorize("hasAuthority('SCOPE_users:write')")
     @PostMapping
     public ResponseEntity<UserVO> create(@RequestBody @Valid UserDTO dto) {
         UserVO vo;
@@ -134,6 +138,7 @@ public class UserController {
      * @param dto 要修改的数据
      * @return 如果修改数据成功，返回修改后的信息，否则返回304状态码
      */
+    @PreAuthorize("hasAuthority('SCOPE_users:write')")
     @PutMapping("/{id}")
     public ResponseEntity<UserVO> modify(@PathVariable Long id,
                                          @RequestBody @Valid UserDTO dto) {
