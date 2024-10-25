@@ -97,7 +97,7 @@ public class AccessLogServiceImpl implements AccessLogService {
         AccessLogVO vo = new AccessLogVO();
         BeanCopier copier = BeanCopier.create(AccessLog.class, AccessLogVO.class, false);
         copier.copy(accessLog, vo, null);
-        vo.setIp(accessLog.getIp().toString());
+        vo.setIp(Objects.nonNull(accessLog.getIp()) ? accessLog.getIp().toString() : null);
         vo.setBody(Objects.nonNull(accessLog.getBody()) ? accessLog.getBody().toString() : null);
         return vo;
     }

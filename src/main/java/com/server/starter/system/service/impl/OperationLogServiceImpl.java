@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.util.Objects;
+
 /**
  * operation log service impl.
  *
@@ -95,7 +97,7 @@ public class OperationLogServiceImpl implements OperationLogService {
         OperationLogVO vo = new OperationLogVO();
         BeanCopier copier = BeanCopier.create(OperationLog.class, OperationLogVO.class, false);
         copier.copy(operationLog, vo, null);
-        vo.setIp(operationLog.getIp().toString());
+        vo.setIp(Objects.nonNull(operationLog.getIp()) ? operationLog.getIp().toString() : null);
         return vo;
     }
 }

@@ -17,11 +17,11 @@
 
 package com.server.starter.service.impl;
 
+import com.server.starter.domain.TreeNode;
 import com.server.starter.system.domain.Group;
 import com.server.starter.system.dto.GroupDTO;
 import com.server.starter.system.repository.GroupRepository;
 import com.server.starter.system.service.impl.GroupServiceImpl;
-import com.server.starter.domain.TreeNode;
 import com.server.starter.system.vo.GroupVO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,9 +69,19 @@ class GroupServiceImplTest {
     void retrieve() {
         Page<Group> page = new PageImpl<>(List.of(Mockito.mock(Group.class)));
 
-        given(this.groupRepository.findAllBySuperiorIdIsNull(Mockito.any(Pageable.class))).willReturn(page);
+        given(this.groupRepository.findAll(Mockito.any(Pageable.class))).willReturn(page);
 
         Page<GroupVO> voPage = groupService.retrieve(0, 2, "id", true, 2L, "test");
+        Assertions.assertNotNull(voPage.getContent());
+    }
+
+    @Test
+    void retrieve_superiorIdIsNull() {
+        Page<Group> page = new PageImpl<>(List.of(Mockito.mock(Group.class)));
+
+        given(this.groupRepository.findAllBySuperiorIdIsNull(Mockito.any(Pageable.class))).willReturn(page);
+
+        Page<GroupVO> voPage = groupService.retrieve(0, 2, "id", true, null, "test");
         Assertions.assertNotNull(voPage.getContent());
     }
 
