@@ -28,7 +28,7 @@ public class FileController {
     /**
      * <p>Constructor for RegionController.</p>
      * <p>
-     * //     * @param regionService a {@link com.server.starter.file.service.FileRecordService} object
+     * //     * @param regionService a {@link FileRecordService} object
      */
     public FileController(FileRecordService fileRecordService) {
         this.fileRecordService = fileRecordService;
