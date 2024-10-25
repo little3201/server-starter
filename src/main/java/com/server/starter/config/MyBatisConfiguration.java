@@ -3,6 +3,7 @@ package com.server.starter.config;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -21,6 +22,7 @@ import java.io.IOException;
 @Configuration(proxyBeanMethods = false)
 @EnableJdbcRepositories(basePackages = "com.server.starter.**.repository")
 @Import(MyBatisJdbcConfiguration.class)
+@MapperScan(basePackages = "com.server.starter.**.mapper")
 public class MyBatisConfiguration {
 
     @Bean

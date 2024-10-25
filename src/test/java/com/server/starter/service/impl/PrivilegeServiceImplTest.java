@@ -17,10 +17,10 @@
 
 package com.server.starter.service.impl;
 
+import com.server.starter.domain.TreeNode;
 import com.server.starter.system.domain.Privilege;
 import com.server.starter.system.repository.PrivilegeRepository;
 import com.server.starter.system.service.impl.PrivilegeServiceImpl;
-import com.server.starter.domain.TreeNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,7 +57,7 @@ class PrivilegeServiceImplTest {
     void tree() {
         given(this.privilegeRepository.findAll()).willReturn(Arrays.asList(Mockito.mock(Privilege.class), Mockito.mock(Privilege.class)));
 
-        List<TreeNode> nodes = privilegeService.tree();
+        List<TreeNode> nodes = privilegeService.tree("test");
         Assertions.assertNotNull(nodes);
     }
 

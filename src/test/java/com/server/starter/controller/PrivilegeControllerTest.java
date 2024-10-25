@@ -18,10 +18,10 @@
 package com.server.starter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.server.starter.domain.TreeNode;
 import com.server.starter.system.controller.PrivilegeController;
 import com.server.starter.system.service.PrivilegeService;
 import com.server.starter.system.service.RolePrivilegesService;
-import com.server.starter.domain.TreeNode;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -64,7 +64,7 @@ class PrivilegeControllerTest {
     @Test
     void tree() throws Exception {
         TreeNode treeNode = TreeNode.withId(1L).name("test").build();
-        given(this.privilegeService.tree()).willReturn(Collections.singletonList(treeNode));
+        given(this.privilegeService.tree(Mockito.anyString())).willReturn(Collections.singletonList(treeNode));
 
         mvc.perform(get("/privileges"))
                 .andExpect(status().isOk())
@@ -74,7 +74,7 @@ class PrivilegeControllerTest {
 
     @Test
     void tree_error() throws Exception {
-        given(this.privilegeService.tree()).willThrow(new RuntimeException());
+        given(this.privilegeService.tree(Mockito.anyString())).willThrow(new RuntimeException());
 
         mvc.perform(get("/privileges"))
                 .andExpect(status().isNoContent())

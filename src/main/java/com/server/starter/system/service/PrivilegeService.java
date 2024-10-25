@@ -16,9 +16,9 @@
  */
 package com.server.starter.system.service;
 
+import com.server.starter.domain.TreeNode;
 import com.server.starter.service.ServletBasicService;
 import com.server.starter.system.dto.PrivilegeDTO;
-import com.server.starter.domain.TreeNode;
 import com.server.starter.system.vo.PrivilegeVO;
 import org.springframework.data.domain.Page;
 
@@ -46,9 +46,10 @@ public interface PrivilegeService extends ServletBasicService<PrivilegeDTO, Priv
     /**
      * 获取树结构数据
      *
+     * @param username username
      * @return 树结构数据集
      */
-    List<TreeNode> tree();
+    List<TreeNode> tree(String username);
 
     /**
      * get subset

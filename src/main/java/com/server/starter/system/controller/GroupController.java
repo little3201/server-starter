@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -67,6 +68,7 @@ public class GroupController {
      * @param superiorId superior id
      * @return 如果查询到数据，返回查询到的分页后的信息列表，否则返回空
      */
+    @PreAuthorize("hasAuthority('SCOPE_groups:read')")
     @GetMapping
     public ResponseEntity<Page<GroupVO>> retrieve(@RequestParam int page, @RequestParam int size,
                                                   String sortBy, boolean descending, Long superiorId, String name) {
@@ -85,6 +87,7 @@ public class GroupController {
      *
      * @return 查询到的数据，否则返回空
      */
+    @PreAuthorize("hasAuthority('SCOPE_groups:read')")
     @GetMapping("/tree")
     public ResponseEntity<List<TreeNode>> tree() {
         List<TreeNode> treeNodes;
@@ -103,6 +106,7 @@ public class GroupController {
      * @param id 主键
      * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
      */
+    @PreAuthorize("hasAuthority('SCOPE_groups:read')")
     @GetMapping("/{id}")
     public ResponseEntity<GroupVO> fetch(@PathVariable Long id) {
         GroupVO groupVO;
@@ -121,6 +125,7 @@ public class GroupController {
      * @param dto 要添加的数据
      * @return 如果添加数据成功，返回添加后的信息，否则返回417状态码
      */
+    @PreAuthorize("hasAuthority('SCOPE_groups:write')")
     @PostMapping
     public ResponseEntity<GroupVO> create(@RequestBody @Valid GroupDTO dto) {
         GroupVO groupVO;
@@ -140,6 +145,7 @@ public class GroupController {
      * @param dto 要修改的数据
      * @return 如果修改数据成功，返回修改后的信息，否则返回304状态码
      */
+    @PreAuthorize("hasAuthority('SCOPE_groups:write')")
     @PutMapping("/{id}")
     public ResponseEntity<GroupVO> modify(@PathVariable Long id, @RequestBody GroupDTO dto) {
         GroupVO groupVO;
