@@ -95,6 +95,7 @@ public class OperationLogServiceImpl implements OperationLogService {
         OperationLogVO vo = new OperationLogVO();
         BeanCopier copier = BeanCopier.create(OperationLog.class, OperationLogVO.class, false);
         copier.copy(operationLog, vo, null);
+        vo.setIp(operationLog.getIp().toString());
         return vo;
     }
 }

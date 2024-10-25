@@ -22,6 +22,8 @@ import com.server.starter.audit.AuditMetadata;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.net.InetAddress;
+
 /**
  * model class for access log.
  *
@@ -36,13 +38,13 @@ public class AccessLog extends AuditMetadata {
     @Column("http_method")
     private String httpMethod;
 
-    private String ip;
+    private Object ip;
 
     private String location;
 
     private String params;
 
-    private String body;
+    private Object body;
 
     @Column("status_code")
     private Integer statusCode;
@@ -70,11 +72,11 @@ public class AccessLog extends AuditMetadata {
         this.httpMethod = method;
     }
 
-    public String getIp() {
+    public Object getIp() {
         return ip;
     }
 
-    public void setIp(String ip) {
+    public void setIp(Object ip) {
         this.ip = ip;
     }
 
@@ -94,11 +96,11 @@ public class AccessLog extends AuditMetadata {
         this.params = params;
     }
 
-    public String getBody() {
+    public Object getBody() {
         return body;
     }
 
-    public void setBody(String body) {
+    public void setBody(Object body) {
         this.body = body;
     }
 
@@ -106,8 +108,8 @@ public class AccessLog extends AuditMetadata {
         return statusCode;
     }
 
-    public void setStatusCode(Integer responseCode) {
-        this.statusCode = responseCode;
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
     }
 
     public Long getResponseTimes() {
@@ -125,6 +127,5 @@ public class AccessLog extends AuditMetadata {
     public void setResponseMessage(String responseMessage) {
         this.responseMessage = responseMessage;
     }
-
 
 }

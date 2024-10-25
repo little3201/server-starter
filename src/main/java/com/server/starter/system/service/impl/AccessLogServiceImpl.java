@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.util.Objects;
+
 /**
  * access log service impl.
  *
@@ -95,6 +97,8 @@ public class AccessLogServiceImpl implements AccessLogService {
         AccessLogVO vo = new AccessLogVO();
         BeanCopier copier = BeanCopier.create(AccessLog.class, AccessLogVO.class, false);
         copier.copy(accessLog, vo, null);
+        vo.setIp(accessLog.getIp().toString());
+        vo.setBody(Objects.nonNull(accessLog.getBody()) ? accessLog.getBody().toString() : null);
         return vo;
     }
 }

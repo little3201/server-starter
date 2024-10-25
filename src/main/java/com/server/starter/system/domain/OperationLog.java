@@ -35,7 +35,7 @@ public class OperationLog extends AuditMetadata {
 
     private String operation;
 
-    private String ip;
+    private Object ip;
 
     private String location;
 
@@ -76,7 +76,7 @@ public class OperationLog extends AuditMetadata {
      *
      * @return a {@link java.lang.String} object
      */
-    public String getIp() {
+    public Object getIp() {
         return ip;
     }
 
@@ -85,7 +85,7 @@ public class OperationLog extends AuditMetadata {
      *
      * @param ip a {@link java.lang.String} object
      */
-    public void setIp(String ip) {
+    public void setIp(Object ip) {
         this.ip = ip;
     }
 
