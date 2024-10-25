@@ -20,6 +20,8 @@ import com.server.starter.audit.AuditMetadata;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.Set;
+
 /**
  * model class for privilege.
  *
@@ -56,6 +58,8 @@ public class Privilege extends AuditMetadata {
     private String icon;
 
     private boolean hidden;
+
+    private Set<String> actions;
 
     /**
      * 描述
@@ -187,6 +191,24 @@ public class Privilege extends AuditMetadata {
      */
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+    }
+
+    /**
+     * <p>getActions.</p>
+     *
+     * @return a boolean
+     */
+    public Set<String> getActions() {
+        return actions;
+    }
+
+    /**
+     * <p>Setter for the field <code>actions</code>.</p>
+     *
+     * @param actions a set
+     */
+    public void setActions(Set<String> actions) {
+        this.actions = actions;
     }
 
     /**

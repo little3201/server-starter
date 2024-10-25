@@ -16,12 +16,12 @@
  */
 package com.server.starter.system.service.impl;
 
+import com.server.starter.domain.TreeNode;
+import com.server.starter.service.ServletAbstractTreeNodeService;
 import com.server.starter.system.domain.Group;
 import com.server.starter.system.dto.GroupDTO;
 import com.server.starter.system.repository.GroupRepository;
 import com.server.starter.system.service.GroupService;
-import com.server.starter.service.ServletAbstractTreeNodeService;
-import com.server.starter.domain.TreeNode;
 import com.server.starter.system.vo.GroupVO;
 import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.data.domain.Page;
@@ -68,7 +68,7 @@ public class GroupServiceImpl extends ServletAbstractTreeNodeService<Group> impl
         if (superiorId == null) {
             return groupRepository.findAllBySuperiorIdIsNull(pageable).map(this::convert);
         }
-        return groupRepository.findAll(pageable).map(this::convert);
+        return groupRepository.findAllBySuperiorId(superiorId, pageable).map(this::convert);
     }
 
     /**

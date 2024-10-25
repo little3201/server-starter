@@ -69,7 +69,7 @@ class GroupServiceImplTest {
     void retrieve() {
         Page<Group> page = new PageImpl<>(List.of(Mockito.mock(Group.class)));
 
-        given(this.groupRepository.findAll(Mockito.any(Pageable.class))).willReturn(page);
+        given(this.groupRepository.findAllBySuperiorId(Mockito.anyLong(), Mockito.any(Pageable.class))).willReturn(page);
 
         Page<GroupVO> voPage = groupService.retrieve(0, 2, "id", true, 2L, "test");
         Assertions.assertNotNull(voPage.getContent());

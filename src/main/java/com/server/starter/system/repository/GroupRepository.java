@@ -38,4 +38,11 @@ public interface GroupRepository extends ListCrudRepository<Group, Long>,
      * @return a {@link Page} object
      */
     Page<Group> findAllBySuperiorIdIsNull(Pageable pageable);
+
+    /**
+     * <p>findAllBySuperiorId.</p>
+     *
+     * @return a {@link Page} object
+     */
+    Page<Group> findAllBySuperiorId(Long superiorId, Pageable pageable);
 }
