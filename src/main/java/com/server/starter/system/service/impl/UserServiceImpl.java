@@ -16,12 +16,12 @@
  */
 package com.server.starter.system.service.impl;
 
+import com.server.starter.convert.Converter;
 import com.server.starter.system.domain.User;
 import com.server.starter.system.dto.UserDTO;
 import com.server.starter.system.repository.UserRepository;
 import com.server.starter.system.service.UserService;
 import com.server.starter.system.vo.UserVO;
-import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -78,6 +78,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).map(this::convert).orElse(null);
     }
 
+    @Override
+    public boolean toggleStatus(Long id) {
+        return userRepository.updateEnabledById(id);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -93,11 +98,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserVO create(UserDTO dto) {
-        User user = new User();
-        BeanCopier copier = BeanCopier.create(UserDTO.class, User.class, false);
-        copier.copy(dto, user, null);
+        User user = Converter.convert(dto, User.class);
         user.setPassword("{noop}123456");
-        user = userRepository.save(user);
+
+        userRepository.save(user);
         return this.convert(user);
     }
 
@@ -107,15 +111,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVO modify(Long id, UserDTO dto) {
         Assert.notNull(id, "id must not be null.");
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null) {
-            return null;
-        }
-        BeanCopier copier = BeanCopier.create(UserDTO.class, User.class, false);
-        copier.copy(dto, user, null);
 
-        user = userRepository.save(user);
-        return this.convert(user);
+        return userRepository.findById(id)
+                .map(existing -> {
+                    User user = Converter.convert(dto, existing);
+                    user = userRepository.save(user);
+                    return this.convert(user);
+                })
+                .orElse(null);
     }
 
     /**
@@ -133,10 +136,7 @@ public class UserServiceImpl implements UserService {
      * @return ExampleMatcher
      */
     private UserVO convert(User user) {
-        UserVO vo = new UserVO();
-        BeanCopier copier = BeanCopier.create(User.class, UserVO.class, false);
-        copier.copy(user, vo, null);
-        return vo;
+        return Converter.convert(user, UserVO.class);
     }
 
 }

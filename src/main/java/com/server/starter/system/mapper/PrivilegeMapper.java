@@ -4,13 +4,13 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
 /**
- * user mapper.
+ * privilege mapper.
  *
  * @author wq li
  */
 @Mapper
-public interface UserMapper {
+public interface PrivilegeMapper {
 
-    @Update("UPDATE users SET enabled = NOT enabled WHERE id = #{id}")
+    @Update("UPDATE privileges SET enabled = NOT enabled WHERE id = #{id}")
     boolean updateEnabledById(Long id);
 }

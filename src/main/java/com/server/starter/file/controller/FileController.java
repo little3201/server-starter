@@ -83,8 +83,8 @@ public class FileController {
      * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
      */
     @PreAuthorize("hasAuthority('SCOPE_files:read')")
-    @GetMapping("/{name}/exist")
-    public ResponseEntity<Boolean> exist(@PathVariable String name) {
+    @GetMapping("/exist")
+    public ResponseEntity<Boolean> exist(@RequestParam String name) {
         boolean exist;
         try {
             exist = fileRecordService.exist(name);
@@ -109,7 +109,7 @@ public class FileController {
             vo = fileRecordService.create(dto);
         } catch (Exception e) {
             logger.error("Create region occurred an error: ", e);
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(vo);
     }

@@ -17,6 +17,8 @@
 package com.server.starter.system.repository;
 
 import com.server.starter.system.domain.Role;
+import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -29,4 +31,16 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RoleRepository extends CrudRepository<Role, Long>,
         PagingAndSortingRepository<Role, Long> {
+
+    /**
+     * 是否存在
+     *
+     * @param name 名称
+     * @return true-存在，false-否
+     */
+    boolean existsByName(String name);
+
+    @Modifying
+    @Query("UPDATE roles SET enabled = NOT enabled WHERE id = :id")
+    boolean updateEnabledById(Long id);
 }

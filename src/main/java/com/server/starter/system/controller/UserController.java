@@ -113,6 +113,24 @@ public class UserController {
     }
 
     /**
+     * 是否存在
+     *
+     * @param username username
+     * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
+     */
+    @GetMapping("/exist")
+    public ResponseEntity<Boolean> exist(@RequestParam String username) {
+        boolean exist;
+        try {
+            exist = userService.exist(username);
+        } catch (Exception e) {
+            logger.info("Query dictionary exist occurred an error: ", e);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(exist);
+    }
+
+    /**
      * 添加信息.
      *
      * @param dto 要修改的数据
@@ -150,6 +168,25 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
         }
         return ResponseEntity.accepted().body(vo);
+    }
+
+    /**
+     * 启用、停用
+     *
+     * @param id 主键
+     * @return 编辑后的信息，否则返回417状态码
+     */
+    @PreAuthorize("hasAuthority('SCOPE_users:write')")
+    @PatchMapping("/{id}")
+    public ResponseEntity<Boolean> toggleStatus(@PathVariable Long id) {
+        boolean enabled;
+        try {
+            enabled = userService.toggleStatus(id);
+        } catch (Exception e) {
+            logger.error("Modify user occurred an error: ", e);
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+        }
+        return ResponseEntity.accepted().body(enabled);
     }
 
 }

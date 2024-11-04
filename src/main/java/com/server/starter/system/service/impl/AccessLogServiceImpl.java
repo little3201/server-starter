@@ -17,12 +17,12 @@
 
 package com.server.starter.system.service.impl;
 
+import com.server.starter.convert.Converter;
 import com.server.starter.system.domain.AccessLog;
 import com.server.starter.system.dto.AccessLogDTO;
 import com.server.starter.system.repository.AccessLogRepository;
 import com.server.starter.system.service.AccessLogService;
 import com.server.starter.system.vo.AccessLogVO;
-import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -67,11 +67,8 @@ public class AccessLogServiceImpl implements AccessLogService {
     @Override
     public AccessLogVO fetch(Long id) {
         Assert.notNull(id, "id must not be null.");
-        AccessLog accessLog = accessLogRepository.findById(id).orElse(null);
-        if (accessLog == null) {
-            return null;
-        }
-        return this.convert(accessLog);
+
+        return accessLogRepository.findById(id).map(this::convert).orElse(null);
     }
 
     /**
@@ -79,9 +76,7 @@ public class AccessLogServiceImpl implements AccessLogService {
      */
     @Override
     public AccessLogVO create(AccessLogDTO dto) {
-        AccessLog accessLog = new AccessLog();
-        BeanCopier copier = BeanCopier.create(AccessLogDTO.class, AccessLog.class, false);
-        copier.copy(dto, accessLog, null);
+        AccessLog accessLog = Converter.convert(dto, AccessLog.class);
 
         accessLogRepository.save(accessLog);
         return this.convert(accessLog);
@@ -94,9 +89,7 @@ public class AccessLogServiceImpl implements AccessLogService {
     }
 
     private AccessLogVO convert(AccessLog accessLog) {
-        AccessLogVO vo = new AccessLogVO();
-        BeanCopier copier = BeanCopier.create(AccessLog.class, AccessLogVO.class, false);
-        copier.copy(accessLog, vo, null);
+        AccessLogVO vo = Converter.convert(accessLog, AccessLogVO.class);
         vo.setIp(Objects.nonNull(accessLog.getIp()) ? accessLog.getIp().toString() : null);
         vo.setBody(Objects.nonNull(accessLog.getBody()) ? accessLog.getBody().toString() : null);
         return vo;

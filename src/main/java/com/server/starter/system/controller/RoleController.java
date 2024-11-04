@@ -106,6 +106,24 @@ public class RoleController {
     }
 
     /**
+     * 是否存在
+     *
+     * @param name 名称
+     * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
+     */
+    @GetMapping("/exist")
+    public ResponseEntity<Boolean> exist(@RequestParam String name) {
+        boolean exist;
+        try {
+            exist = roleService.exist(name);
+        } catch (Exception e) {
+            logger.info("Query dictionary exist occurred an error: ", e);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(exist);
+    }
+
+    /**
      * 添加信息
      *
      * @param dto 要添加的数据
@@ -119,7 +137,7 @@ public class RoleController {
             vo = roleService.create(dto);
         } catch (Exception e) {
             logger.error("Create role occurred an error: ", e);
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(vo);
     }
@@ -145,6 +163,25 @@ public class RoleController {
     }
 
     /**
+     * 启用、停用
+     *
+     * @param id 主键
+     * @return 编辑后的信息，否则返回417状态码
+     */
+    @PreAuthorize("hasAuthority('SCOPE_roles:write')")
+    @PatchMapping("/{id}")
+    public ResponseEntity<Boolean> toggleStatus(@PathVariable Long id) {
+        boolean enabled;
+        try {
+            enabled = roleService.toggleStatus(id);
+        } catch (Exception e) {
+            logger.error("Modify user occurred an error: ", e);
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+        }
+        return ResponseEntity.accepted().body(enabled);
+    }
+
+    /**
      * 删除信息
      *
      * @param id 主键
@@ -156,7 +193,7 @@ public class RoleController {
             roleService.remove(id);
         } catch (Exception e) {
             logger.error("Remove role occurred an error: ", e);
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
         return ResponseEntity.ok().build();
     }
@@ -211,7 +248,7 @@ public class RoleController {
             voList = rolePrivilegesService.relation(id, privileges);
         } catch (Exception e) {
             logger.error("Relation role privileges occurred an error: ", e);
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
         return ResponseEntity.accepted().body(voList);
     }

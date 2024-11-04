@@ -17,6 +17,8 @@
 package com.server.starter.system.repository;
 
 import com.server.starter.system.domain.User;
+import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -41,4 +43,8 @@ public interface UserRepository extends CrudRepository<User, Long>,
      * @return true-存在，false-否
      */
     boolean existsByUsername(String username);
+
+    @Modifying
+    @Query("UPDATE users SET enabled = NOT enabled WHERE id = :id")
+    boolean updateEnabledById(Long id);
 }

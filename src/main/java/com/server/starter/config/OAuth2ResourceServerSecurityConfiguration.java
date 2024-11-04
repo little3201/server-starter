@@ -69,7 +69,7 @@ public class OAuth2ResourceServerSecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) -> authorize.anyRequest().authenticated())
-                .csrf((csrf) -> csrf.ignoringRequestMatchers("/token"))
+                .csrf((csrf) -> csrf.ignoringRequestMatchers("/signin"))
                 .httpBasic(Customizer.withDefaults())
                 .oauth2ResourceServer(o -> o.jwt(Customizer.withDefaults()))
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -50,4 +50,6 @@ public interface DictionaryService extends ServletBasicService<DictionaryDTO, Di
      * @return 数据集
      */
     List<DictionaryVO> subset(Long id);
+
+    boolean exist(Long superiorId, String name);
 }

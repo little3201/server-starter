@@ -16,11 +16,11 @@
  */
 package com.server.starter.system.controller;
 
+import com.server.starter.domain.TreeNode;
 import com.server.starter.system.domain.GroupMembers;
 import com.server.starter.system.dto.GroupDTO;
 import com.server.starter.system.service.GroupMembersService;
 import com.server.starter.system.service.GroupService;
-import com.server.starter.domain.TreeNode;
 import com.server.starter.system.vo.GroupVO;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -120,6 +120,24 @@ public class GroupController {
     }
 
     /**
+     * 是否存在
+     *
+     * @param name 名称
+     * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
+     */
+    @GetMapping("/exist")
+    public ResponseEntity<Boolean> exist(@RequestParam String name) {
+        boolean exist;
+        try {
+            exist = groupService.exist(name);
+        } catch (Exception e) {
+            logger.info("Query dictionary exist occurred an error: ", e);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(exist);
+    }
+
+    /**
      * 添加信息
      *
      * @param dto 要添加的数据
@@ -133,7 +151,7 @@ public class GroupController {
             groupVO = groupService.create(dto);
         } catch (Exception e) {
             logger.error("Create group occurred an error: ", e);
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(groupVO);
     }
@@ -156,6 +174,25 @@ public class GroupController {
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
         }
         return ResponseEntity.accepted().body(groupVO);
+    }
+
+    /**
+     * 启用、停用
+     *
+     * @param id 主键
+     * @return 编辑后的信息，否则返回417状态码
+     */
+    @PreAuthorize("hasAuthority('SCOPE_groups:write')")
+    @PatchMapping("/{id}")
+    public ResponseEntity<Boolean> toggleStatus(@PathVariable Long id) {
+        boolean enabled;
+        try {
+            enabled = groupService.toggleStatus(id);
+        } catch (Exception e) {
+            logger.error("Modify user occurred an error: ", e);
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+        }
+        return ResponseEntity.accepted().body(enabled);
     }
 
     /**

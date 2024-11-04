@@ -17,6 +17,7 @@
 package com.server.starter.system.repository;
 
 import com.server.starter.system.domain.Privilege;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.ListCrudRepository;
@@ -30,6 +31,7 @@ import java.util.List;
  *
  * @author wq li
  */
+@Mapper
 @Repository
 public interface PrivilegeRepository extends ListCrudRepository<Privilege, Long>,
         PagingAndSortingRepository<Privilege, Long> {
@@ -56,4 +58,5 @@ public interface PrivilegeRepository extends ListCrudRepository<Privilege, Long>
      * @return a long
      */
     long countBySuperiorId(Long superiorId);
+
 }

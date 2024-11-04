@@ -57,8 +57,6 @@ public class Privilege extends AuditMetadata {
      */
     private String icon;
 
-    private boolean hidden;
-
     private Set<String> actions;
 
     /**
@@ -173,24 +171,6 @@ public class Privilege extends AuditMetadata {
      */
     public void setIcon(String icon) {
         this.icon = icon;
-    }
-
-    /**
-     * <p>isHidden.</p>
-     *
-     * @return a boolean
-     */
-    public boolean isHidden() {
-        return hidden;
-    }
-
-    /**
-     * <p>Setter for the field <code>hidden</code>.</p>
-     *
-     * @param hidden a boolean
-     */
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
     }
 
     /**

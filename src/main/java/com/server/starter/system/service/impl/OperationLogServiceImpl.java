@@ -17,12 +17,12 @@
 
 package com.server.starter.system.service.impl;
 
+import com.server.starter.convert.Converter;
 import com.server.starter.system.domain.OperationLog;
 import com.server.starter.system.dto.OperationLogDTO;
 import com.server.starter.system.repository.OperationLogRepository;
 import com.server.starter.system.service.OperationLogService;
 import com.server.starter.system.vo.OperationLogVO;
-import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -67,11 +67,8 @@ public class OperationLogServiceImpl implements OperationLogService {
     @Override
     public OperationLogVO fetch(Long id) {
         Assert.notNull(id, "id must not be null.");
-        OperationLog operationLog = operationLogRepository.findById(id).orElse(null);
-        if (operationLog == null) {
-            return null;
-        }
-        return this.convert(operationLog);
+
+        return operationLogRepository.findById(id).map(this::convert).orElse(null);
     }
 
     /**
@@ -79,9 +76,7 @@ public class OperationLogServiceImpl implements OperationLogService {
      */
     @Override
     public OperationLogVO create(OperationLogDTO dto) {
-        OperationLog operationLog = new OperationLog();
-        BeanCopier copier = BeanCopier.create(OperationLogDTO.class, OperationLog.class, false);
-        copier.copy(dto, operationLog, null);
+        OperationLog operationLog = Converter.convert(dto, OperationLog.class);
 
         operationLogRepository.save(operationLog);
         return this.convert(operationLog);
@@ -94,9 +89,7 @@ public class OperationLogServiceImpl implements OperationLogService {
     }
 
     private OperationLogVO convert(OperationLog operationLog) {
-        OperationLogVO vo = new OperationLogVO();
-        BeanCopier copier = BeanCopier.create(OperationLog.class, OperationLogVO.class, false);
-        copier.copy(operationLog, vo, null);
+        OperationLogVO vo = Converter.convert(operationLog, OperationLogVO.class);
         vo.setIp(Objects.nonNull(operationLog.getIp()) ? operationLog.getIp().toString() : null);
         return vo;
     }

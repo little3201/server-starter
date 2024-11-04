@@ -29,9 +29,7 @@ public class PrivilegeVO extends PrivilegeBO {
 
     private long count;
 
-
     private boolean enabled;
-
 
     /**
      * <p>Getter for the field <code>id</code>.</p>

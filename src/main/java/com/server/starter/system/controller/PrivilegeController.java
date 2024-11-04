@@ -138,25 +138,6 @@ public class PrivilegeController {
     }
 
     /**
-     * 添加信息
-     *
-     * @param dto 要添加的数据
-     * @return 添加后的信息，否则返回417状态码
-     */
-    @PreAuthorize("hasAuthority('SCOPE_privileges:write')")
-    @PostMapping
-    public ResponseEntity<PrivilegeVO> create(@RequestBody @Valid PrivilegeDTO dto) {
-        PrivilegeVO vo;
-        try {
-            vo = privilegeService.create(dto);
-        } catch (Exception e) {
-            logger.error("Create privilege occurred an error: ", e);
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(vo);
-    }
-
-    /**
      * 修改信息
      *
      * @param id  主键
@@ -174,6 +155,25 @@ public class PrivilegeController {
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
         }
         return ResponseEntity.accepted().body(vo);
+    }
+
+    /**
+     * 启用、停用
+     *
+     * @param id 主键
+     * @return 编辑后的信息，否则返回417状态码
+     */
+    @PreAuthorize("hasAuthority('SCOPE_privileges:write')")
+    @PatchMapping("/{id}")
+    public ResponseEntity<Boolean> toggleStatus(@PathVariable Long id) {
+        boolean enabled;
+        try {
+            enabled = privilegeService.toggleStatus(id);
+        } catch (Exception e) {
+            logger.error("Modify privilege occurred an error: ", e);
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+        }
+        return ResponseEntity.accepted().body(enabled);
     }
 
     /**

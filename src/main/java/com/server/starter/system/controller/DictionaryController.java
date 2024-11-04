@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -116,11 +117,11 @@ public class DictionaryController {
      * @param name 名称
      * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
      */
-    @GetMapping("/{name}/exist")
-    public ResponseEntity<Boolean> exist(@PathVariable String name) {
+    @GetMapping("/{superiorId}/exist")
+    public ResponseEntity<Boolean> exist(@PathVariable Long superiorId, @RequestParam String name) {
         boolean exist;
         try {
-            exist = dictionaryService.exist(name);
+            exist = dictionaryService.exist(superiorId, name);
         } catch (Exception e) {
             logger.info("Query dictionary exist occurred an error: ", e);
             return ResponseEntity.noContent().build();
@@ -134,6 +135,7 @@ public class DictionaryController {
      * @param dto 要添加的数据
      * @return 如果添加数据成功，返回添加后的信息，否则返回417状态码
      */
+    @PreAuthorize("hasAuthority('SCOPE_dictionaries:write')")
     @PostMapping
     public ResponseEntity<DictionaryVO> create(@RequestBody @Valid DictionaryDTO dto) {
         DictionaryVO vo;
@@ -141,7 +143,7 @@ public class DictionaryController {
             vo = dictionaryService.create(dto);
         } catch (Exception e) {
             logger.error("Create dictionary occurred an error: ", e);
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(vo);
     }
@@ -153,6 +155,7 @@ public class DictionaryController {
      * @param id  a {@link java.lang.Long} object
      * @return 如果添加数据成功，返回添加后的信息，否则返回417状态码
      */
+    @PreAuthorize("hasAuthority('SCOPE_dictionaries:write')")
     @PutMapping("/{id}")
     public ResponseEntity<DictionaryVO> modify(@PathVariable Long id, @RequestBody @Valid DictionaryDTO dto) {
         DictionaryVO vo;
@@ -166,11 +169,31 @@ public class DictionaryController {
     }
 
     /**
+     * 启用、停用
+     *
+     * @param id 主键
+     * @return 编辑后的信息，否则返回417状态码
+     */
+    @PreAuthorize("hasAuthority('SCOPE_dictionaries:write')")
+    @PatchMapping("/{id}")
+    public ResponseEntity<Boolean> toggleStatus(@PathVariable Long id) {
+        boolean enabled;
+        try {
+            enabled = dictionaryService.toggleStatus(id);
+        } catch (Exception e) {
+            logger.error("Modify user occurred an error: ", e);
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+        }
+        return ResponseEntity.accepted().body(enabled);
+    }
+
+    /**
      * 删除信息
      *
      * @param id 主键
      * @return 如果删除成功，返回200状态码，否则返回417状态码
      */
+    @PreAuthorize("hasAuthority('SCOPE_dictionaries:write')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remove(@PathVariable Long id) {
         try {

@@ -24,7 +24,7 @@ public class TokenController {
     @Autowired
     JwtEncoder encoder;
 
-    @PostMapping("/token")
+    @PostMapping("/signin")
     public ResponseEntity<String> token(Authentication authentication) {
         Instant now = Instant.now();
         long expiry = 36000L;
@@ -44,6 +44,12 @@ public class TokenController {
         String jwtToken = this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
         return ResponseEntity.ok(jwtToken);
+    }
+
+    @PostMapping("/signout")
+    public ResponseEntity<Void> logout(Authentication authentication) {
+        authentication.setAuthenticated(false);
+        return ResponseEntity.ok().build();
     }
 
 }

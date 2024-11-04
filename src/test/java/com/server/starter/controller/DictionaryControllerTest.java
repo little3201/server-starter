@@ -168,7 +168,7 @@ class DictionaryControllerTest {
     void exist() throws Exception {
         given(this.dictionaryService.exist(Mockito.anyString())).willReturn(true);
 
-        mvc.perform(get("/dictionaries/{name}/exist", "gender")).andExpect(status().isOk())
+        mvc.perform(get("/dictionaries/exist").queryParam("name", "gender")).andExpect(status().isOk())
                 .andDo(print()).andReturn();
     }
 
@@ -176,7 +176,7 @@ class DictionaryControllerTest {
     void exist_error() throws Exception {
         given(this.dictionaryService.exist(Mockito.anyString())).willThrow(new RuntimeException());
 
-        mvc.perform(get("/dictionaries/{name}/exist", "gender")).andExpect(status().isNoContent())
+        mvc.perform(get("/dictionaries/exist").queryParam("name","gender")).andExpect(status().isNoContent())
                 .andDo(print()).andReturn();
     }
 

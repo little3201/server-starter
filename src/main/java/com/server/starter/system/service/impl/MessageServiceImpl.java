@@ -17,12 +17,12 @@
 
 package com.server.starter.system.service.impl;
 
+import com.server.starter.convert.Converter;
 import com.server.starter.system.domain.Message;
 import com.server.starter.system.dto.MessageDTO;
 import com.server.starter.system.repository.MessageRepository;
 import com.server.starter.system.service.MessageService;
 import com.server.starter.system.vo.MessageVO;
-import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -68,8 +68,8 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public MessageVO fetch(Long id) {
         Assert.notNull(id, "id must not be null.");
-        Message message = messageRepository.findById(id).orElse(null);
-        return this.convert(message);
+
+        return messageRepository.findById(id).map(this::convert).orElse(null);
     }
 
     /**
@@ -77,9 +77,7 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public MessageVO create(MessageDTO dto) {
-        Message message = new Message();
-        BeanCopier copier = BeanCopier.create(MessageDTO.class, Message.class, false);
-        copier.copy(dto, message, null);
+        Message message = Converter.convert(dto, Message.class);
 
         messageRepository.save(message);
         return this.convert(message);
@@ -91,9 +89,6 @@ public class MessageServiceImpl implements MessageService {
      * @return ExampleMatcher
      */
     private MessageVO convert(Message message) {
-        MessageVO vo = new MessageVO();
-        BeanCopier copier = BeanCopier.create(Message.class, MessageVO.class, false);
-        copier.copy(message, vo, null);
-        return vo;
+        return Converter.convert(message, MessageVO.class);
     }
 }

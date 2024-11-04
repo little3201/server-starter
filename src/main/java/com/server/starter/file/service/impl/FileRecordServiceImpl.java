@@ -1,11 +1,11 @@
 package com.server.starter.file.service.impl;
 
 
+import com.server.starter.convert.Converter;
 import com.server.starter.file.domain.FileRecord;
 import com.server.starter.file.repository.FileRecordRepository;
 import com.server.starter.file.service.FileRecordService;
 import com.server.starter.file.vo.FileRecordVO;
-import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,9 +50,6 @@ public class FileRecordServiceImpl implements FileRecordService {
      * @return FileVO 输出对象
      */
     private FileRecordVO convert(FileRecord fileRecord) {
-        FileRecordVO vo = new FileRecordVO();
-        BeanCopier copier = BeanCopier.create(FileRecord.class, FileRecordVO.class, false);
-        copier.copy(fileRecord, vo, null);
-        return vo;
+        return Converter.convert(fileRecord, FileRecordVO.class);
     }
 }

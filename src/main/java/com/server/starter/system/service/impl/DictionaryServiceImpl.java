@@ -17,13 +17,13 @@
 
 package com.server.starter.system.service.impl;
 
+import com.server.starter.convert.Converter;
+import com.server.starter.service.ServletAbstractTreeNodeService;
 import com.server.starter.system.domain.Dictionary;
 import com.server.starter.system.dto.DictionaryDTO;
 import com.server.starter.system.repository.DictionaryRepository;
 import com.server.starter.system.service.DictionaryService;
-import com.server.starter.service.ServletAbstractTreeNodeService;
 import com.server.starter.system.vo.DictionaryVO;
-import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +33,6 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * dictionary service impl.
@@ -72,11 +71,13 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
     @Override
     public DictionaryVO fetch(Long id) {
         Assert.notNull(id, "id must not be null.");
-        Dictionary dictionary = dictionaryRepository.findById(id).orElse(null);
-        if (dictionary == null) {
-            return null;
-        }
-        return this.convert(dictionary);
+
+        return dictionaryRepository.findById(id).map(this::convert).orElse(null);
+    }
+
+    @Override
+    public boolean toggleStatus(Long id) {
+        return dictionaryRepository.updateEnabledById(id);
     }
 
     /**
@@ -93,9 +94,9 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
      * {@inheritDoc}
      */
     @Override
-    public boolean exist(String name) {
+    public boolean exist(Long superiorId, String name) {
         Assert.hasText(name, "name must not be blank.");
-        return dictionaryRepository.existsByName(name);
+        return dictionaryRepository.existsBySuperiorIdAndName(superiorId, name);
     }
 
     /**
@@ -103,12 +104,9 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
      */
     @Override
     public DictionaryVO create(DictionaryDTO dto) {
-        Dictionary dictionary = new Dictionary();
-        BeanCopier copier = BeanCopier.create(DictionaryDTO.class, Dictionary.class, false);
-        copier.copy(dto, dictionary, null);
+        Dictionary dictionary = Converter.convert(dto, Dictionary.class);
 
         dictionaryRepository.save(dictionary);
-
         return this.convert(dictionary);
     }
 
@@ -118,16 +116,12 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
     @Override
     public DictionaryVO modify(Long id, DictionaryDTO dto) {
         Assert.notNull(id, "id must not be null.");
-        Dictionary dictionary = dictionaryRepository.findById(id).orElse(null);
-        if (dictionary == null) {
-            throw new NoSuchElementException("当前操作数据不存在...");
-        }
-
-        BeanCopier copier = BeanCopier.create(DictionaryDTO.class, Dictionary.class, false);
-        copier.copy(dto, dictionary, null);
-
-        dictionaryRepository.save(dictionary);
-        return this.convert(dictionary);
+        return dictionaryRepository.findById(id).map(existing -> {
+                    Dictionary dictionary = Converter.convert(dto, existing);
+                    dictionary = dictionaryRepository.save(dictionary);
+                    return this.convert(dictionary);
+                })
+                .orElse(null);
     }
 
     /**
@@ -146,9 +140,6 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
      * @return DictionaryVO 输出对象
      */
     private DictionaryVO convert(Dictionary dictionary) {
-        DictionaryVO vo = new DictionaryVO();
-        BeanCopier copier = BeanCopier.create(Dictionary.class, DictionaryVO.class, false);
-        copier.copy(dictionary, vo, null);
-        return vo;
+        return Converter.convert(dictionary, DictionaryVO.class);
     }
 }

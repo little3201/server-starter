@@ -49,6 +49,16 @@ public interface ServletBasicService<D, V> {
     }
 
     /**
+     * Enable or Disable a record by its ID.
+     *
+     * @param id the record ID
+     * @return true if the record enabled/disabled, false otherwise
+     */
+    default boolean toggleStatus(Long id) {
+        return false;
+    }
+
+    /**
      * Checks if a record exists by it's field.
      *
      * @param field the record's field

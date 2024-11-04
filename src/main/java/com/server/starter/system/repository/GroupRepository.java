@@ -19,6 +19,8 @@ package com.server.starter.system.repository;
 import com.server.starter.system.domain.Group;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -45,4 +47,16 @@ public interface GroupRepository extends ListCrudRepository<Group, Long>,
      * @return a {@link Page} object
      */
     Page<Group> findAllBySuperiorId(Long superiorId, Pageable pageable);
+
+    /**
+     * 是否存在
+     *
+     * @param name 名称
+     * @return true-存在，false-否
+     */
+    boolean existsByName(String name);
+
+    @Modifying
+    @Query("UPDATE groups SET enabled = NOT enabled WHERE id = :id")
+    boolean updateEnabledById(Long id);
 }

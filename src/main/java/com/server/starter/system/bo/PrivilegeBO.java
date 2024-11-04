@@ -21,6 +21,8 @@ package com.server.starter.system.bo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.Set;
+
 /**
  * bo class for privilege
  *
@@ -32,6 +34,8 @@ public abstract class PrivilegeBO {
     @NotBlank(message = "name must not be blank.")
     @Size(max = 32, message = "name max length is 32.")
     private String name;
+
+    private Long superiorId;
 
     private String path;
 
@@ -50,6 +54,8 @@ public abstract class PrivilegeBO {
      */
     @NotBlank(message = "icon must not be blank.")
     private String icon;
+
+    private Set<String> actions;
 
     /**
      * 描述
@@ -72,6 +78,24 @@ public abstract class PrivilegeBO {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * <p>Getter for the field <code>superiorId</code>.</p>
+     *
+     * @return a {@link java.lang.Long} object
+     */
+    public Long getSuperiorId() {
+        return superiorId;
+    }
+
+    /**
+     * <p>Setter for the field <code>superiorId</code>.</p>
+     *
+     * @param superiorId a {@link java.lang.String} object
+     */
+    public void setSuperiorId(Long superiorId) {
+        this.superiorId = superiorId;
     }
 
     /**
@@ -144,6 +168,24 @@ public abstract class PrivilegeBO {
      */
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    /**
+     * <p>Getter for the field <code>description</code>.</p>
+     *
+     * @return a {@link java.lang.String} object
+     */
+    public Set<String> getActions() {
+        return actions;
+    }
+
+    /**
+     * <p>Setter for the field <code>actions</code>.</p>
+     *
+     * @param actions a {@link java.lang.String} object
+     */
+    public void setActions(Set<String> actions) {
+        this.actions = actions;
     }
 
     /**

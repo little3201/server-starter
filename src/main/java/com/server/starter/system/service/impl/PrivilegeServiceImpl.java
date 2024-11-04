@@ -16,18 +16,19 @@
  */
 package com.server.starter.system.service.impl;
 
+import com.server.starter.convert.Converter;
 import com.server.starter.domain.TreeNode;
 import com.server.starter.service.ServletAbstractTreeNodeService;
 import com.server.starter.system.domain.Privilege;
 import com.server.starter.system.domain.RoleMembers;
 import com.server.starter.system.domain.RolePrivileges;
 import com.server.starter.system.dto.PrivilegeDTO;
+import com.server.starter.system.mapper.PrivilegeMapper;
 import com.server.starter.system.repository.PrivilegeRepository;
 import com.server.starter.system.repository.RoleMembersRepository;
 import com.server.starter.system.repository.RolePrivilegesRepository;
 import com.server.starter.system.service.PrivilegeService;
 import com.server.starter.system.vo.PrivilegeVO;
-import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +51,7 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
     public final RoleMembersRepository roleMembersRepository;
     public final RolePrivilegesRepository rolePrivilegesRepository;
     private final PrivilegeRepository privilegeRepository;
+    private final PrivilegeMapper privilegeMapper;
 
     /**
      * <p>Constructor for PrivilegeServiceImpl.</p>
@@ -57,10 +59,11 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
      * @param rolePrivilegesRepository a {@link RolePrivilegesRepository} object
      * @param privilegeRepository      a {@link PrivilegeRepository} object
      */
-    public PrivilegeServiceImpl(RoleMembersRepository roleMembersRepository, RolePrivilegesRepository rolePrivilegesRepository, PrivilegeRepository privilegeRepository) {
+    public PrivilegeServiceImpl(RoleMembersRepository roleMembersRepository, RolePrivilegesRepository rolePrivilegesRepository, PrivilegeRepository privilegeRepository, PrivilegeMapper privilegeMapper) {
         this.roleMembersRepository = roleMembersRepository;
         this.rolePrivilegesRepository = rolePrivilegesRepository;
         this.privilegeRepository = privilegeRepository;
+        this.privilegeMapper = privilegeMapper;
     }
 
     /**
@@ -108,24 +111,13 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
     @Override
     public PrivilegeVO fetch(Long id) {
         Assert.notNull(id, "id must not be null.");
-        Privilege privilege = privilegeRepository.findById(id).orElse(null);
-        if (privilege == null) {
-            return null;
-        }
-        return this.convert(privilege);
+
+        return privilegeRepository.findById(id).map(this::convert).orElse(null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public PrivilegeVO create(PrivilegeDTO dto) {
-        Privilege privilege = new Privilege();
-        BeanCopier copier = BeanCopier.create(PrivilegeDTO.class, Privilege.class, false);
-        copier.copy(dto, privilege, null);
-
-        privilege = privilegeRepository.save(privilege);
-        return this.convert(privilege);
+    public boolean toggleStatus(Long id) {
+        return privilegeMapper.updateEnabledById(id);
     }
 
     /**
@@ -134,15 +126,12 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
     @Override
     public PrivilegeVO modify(Long id, PrivilegeDTO dto) {
         Assert.notNull(id, "id must not be null.");
-        Privilege privilege = privilegeRepository.findById(id).orElse(null);
-        if (privilege == null) {
-            throw new NoSuchElementException("当前操作数据不存在...");
-        }
-        BeanCopier copier = BeanCopier.create(PrivilegeDTO.class, Privilege.class, false);
-        copier.copy(dto, privilege, null);
-
-        privilege = privilegeRepository.save(privilege);
-        return this.convert(privilege);
+        return privilegeRepository.findById(id).map(existing -> {
+                    Privilege privilege = Converter.convert(dto, existing);
+                    privilege = privilegeRepository.save(privilege);
+                    return this.convert(privilege);
+                })
+                .orElse(null);
     }
 
     /**
@@ -162,9 +151,7 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
      * @return 结果对象
      */
     private PrivilegeVO convert(Privilege privilege) {
-        PrivilegeVO vo = new PrivilegeVO();
-        BeanCopier copier = BeanCopier.create(Privilege.class, PrivilegeVO.class, false);
-        copier.copy(privilege, vo, null);
+        PrivilegeVO vo = Converter.convert(privilege, PrivilegeVO.class);
         long count = privilegeRepository.countBySuperiorId(privilege.getId());
         vo.setCount(count);
         return vo;
@@ -185,7 +172,6 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
         meta.add("redirect");
         meta.add("component");
         meta.add("icon");
-        meta.add("hidden");
         return this.convert(privileges, meta);
     }
 

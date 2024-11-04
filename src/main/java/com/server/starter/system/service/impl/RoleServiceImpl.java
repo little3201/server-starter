@@ -16,12 +16,12 @@
  */
 package com.server.starter.system.service.impl;
 
+import com.server.starter.convert.Converter;
 import com.server.starter.system.domain.Role;
 import com.server.starter.system.dto.RoleDTO;
 import com.server.starter.system.repository.RoleRepository;
 import com.server.starter.system.service.RoleService;
 import com.server.starter.system.vo.RoleVO;
-import org.springframework.cglib.beans.BeanCopier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,8 +29,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-
-import java.util.NoSuchElementException;
 
 /**
  * role service impl.
@@ -69,11 +67,18 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleVO fetch(Long id) {
         Assert.notNull(id, "id must not be null.");
-        Role role = roleRepository.findById(id).orElse(null);
-        if (role == null) {
-            return null;
-        }
-        return this.convert(role);
+
+        return roleRepository.findById(id).map(this::convert).orElse(null);
+    }
+
+    @Override
+    public boolean exist(String name) {
+        return roleRepository.existsByName(name);
+    }
+
+    @Override
+    public boolean toggleStatus(Long id) {
+        return roleRepository.updateEnabledById(id);
     }
 
     /**
@@ -81,11 +86,9 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public RoleVO create(RoleDTO dto) {
-        Role role = new Role();
-        BeanCopier copier = BeanCopier.create(RoleDTO.class, Role.class, false);
-        copier.copy(dto, role, null);
+        Role role = Converter.convert(dto, Role.class);
 
-        role = roleRepository.save(role);
+        roleRepository.save(role);
         return this.convert(role);
     }
 
@@ -95,15 +98,12 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleVO modify(Long id, RoleDTO dto) {
         Assert.notNull(id, "id must not be null.");
-        Role role = roleRepository.findById(id).orElse(null);
-        if (role == null) {
-            throw new NoSuchElementException("当前操作数据不存在...");
-        }
-        BeanCopier copier = BeanCopier.create(RoleDTO.class, Role.class, false);
-        copier.copy(dto, role, null);
-
-        role = roleRepository.save(role);
-        return this.convert(role);
+        return roleRepository.findById(id).map(existing -> {
+                    Role role = Converter.convert(dto, existing);
+                    role = roleRepository.save(role);
+                    return this.convert(role);
+                })
+                .orElse(null);
     }
 
     /**
@@ -122,10 +122,7 @@ public class RoleServiceImpl implements RoleService {
      * @return 结果对象
      */
     private RoleVO convert(Role role) {
-        RoleVO vo = new RoleVO();
-        BeanCopier copier = BeanCopier.create(Role.class, RoleVO.class, false);
-        copier.copy(role, vo, null);
-        return vo;
+        return Converter.convert(role, RoleVO.class);
     }
 
 }
