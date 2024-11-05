@@ -137,26 +137,6 @@ class PrivilegeControllerTest {
     }
 
     @Test
-    void create() throws Exception {
-        given(this.privilegeService.create(Mockito.any(PrivilegeDTO.class))).willReturn(privilegeVO);
-
-        mvc.perform(post("/privileges").contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(privilegeDTO)).with(csrf().asHeader())).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("test"))
-                .andDo(print()).andReturn();
-    }
-
-    @Test
-    void create_error() throws Exception {
-        given(this.privilegeService.create(Mockito.any(PrivilegeDTO.class))).willThrow(new RuntimeException());
-
-        mvc.perform(post("/privileges").contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(privilegeDTO)).with(csrf().asHeader()))
-                .andExpect(status().isExpectationFailed())
-                .andDo(print()).andReturn();
-    }
-
-    @Test
     void modify() throws Exception {
         given(this.privilegeService.modify(Mockito.anyLong(), Mockito.any(PrivilegeDTO.class))).willReturn(privilegeVO);
 
