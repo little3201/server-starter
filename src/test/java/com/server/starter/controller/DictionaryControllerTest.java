@@ -119,6 +119,14 @@ class DictionaryControllerTest {
     }
 
     @Test
+    void subset_error() throws Exception {
+        given(this.dictionaryService.subset(Mockito.anyLong())).willThrow(new RuntimeException());
+
+        mvc.perform(get("/dictionaries/{id}/subset", Mockito.anyLong())).andExpect(status().isNoContent())
+                .andDo(print()).andReturn();
+    }
+
+    @Test
     void fetch() throws Exception {
         given(this.dictionaryService.fetch(Mockito.anyLong())).willReturn(dictionaryVO);
 
@@ -176,15 +184,7 @@ class DictionaryControllerTest {
     void exist_error() throws Exception {
         given(this.dictionaryService.exist(Mockito.anyLong(), Mockito.anyString())).willThrow(new RuntimeException());
 
-        mvc.perform(get("/dictionaries/{superiorId}/exist", '1').queryParam("name","gender")).andExpect(status().isNoContent())
-                .andDo(print()).andReturn();
-    }
-
-    @Test
-    void lower_error() throws Exception {
-        given(this.dictionaryService.subset(Mockito.anyLong())).willThrow(new RuntimeException());
-
-        mvc.perform(get("/dictionaries/{id}/subset", Mockito.anyLong())).andExpect(status().isNoContent())
+        mvc.perform(get("/dictionaries/{superiorId}/exist", '1').queryParam("name", "gender")).andExpect(status().isNoContent())
                 .andDo(print()).andReturn();
     }
 
