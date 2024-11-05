@@ -18,10 +18,12 @@
 package com.server.starter.audit;
 
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
+import java.security.Principal;
 import java.util.Optional;
 
 /**
@@ -39,7 +41,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
     public Optional<String> getCurrentAuditor() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
-                .filter(auth -> auth.isAuthenticated() && auth.getPrincipal() instanceof User)
-                .map(auth -> ((User) auth.getPrincipal()).getUsername());
+                .filter(Authentication::isAuthenticated)
+                .map(Principal::getName);
     }
 }

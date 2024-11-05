@@ -172,6 +172,7 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
         meta.add("redirect");
         meta.add("component");
         meta.add("icon");
+        meta.add("actions");
         return this.convert(privileges, meta);
     }
 
