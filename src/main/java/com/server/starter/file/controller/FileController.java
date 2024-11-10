@@ -41,6 +41,7 @@ public class FileController {
      * @param size       大小
      * @param sortBy     排序字段
      * @param descending 排序方向
+     * @param name       名称
      * @return 查询的数据集，异常时返回204状态码
      */
     @PreAuthorize("hasAuthority('SCOPE_files:read')")

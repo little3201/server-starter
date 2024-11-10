@@ -91,7 +91,11 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
         for (RoleMembers roleMember : roleMembers) {
             List<RolePrivileges> rolePrivileges = rolePrivilegesRepository.findAllByRoleId(roleMember.getRoleId());
             for (RolePrivileges rolePrivilege : rolePrivileges) {
-                privilegeRepository.findById(rolePrivilege.getPrivilegeId()).ifPresent(privileges::add);
+                privilegeRepository.findById(rolePrivilege.getPrivilegeId()).ifPresent(privilege -> {
+                    if (privilege.isEnabled()) {
+                        privileges.add(privilege);
+                    }
+                });
             }
         }
         return this.convertTree(privileges);
