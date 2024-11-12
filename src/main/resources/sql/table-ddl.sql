@@ -84,6 +84,8 @@ ON COLUMN users.id IS '主键';
 COMMENT
 ON COLUMN users.username IS '用户名';
 COMMENT
+ON COLUMN users.full_name IS '姓名';
+COMMENT
 ON COLUMN users.password IS '密码';
 COMMENT
 ON COLUMN users.email IS '邮箱';
@@ -272,7 +274,7 @@ CREATE TABLE privileges
     redirect           varchar(255),
     component          varchar(255),
     icon               varchar(127),
-    actions            text[],
+    actions            varchar[],
     description        varchar(255),
     enabled            boolean     NOT NULL DEFAULT true,
     created_by         varchar(50),
@@ -508,7 +510,7 @@ CREATE TABLE operation_logs
 
 -- Add comment to the table and columns
 COMMENT
-ON TABLE operation_logs IS '访问日志表';
+ON TABLE operation_logs IS '操作日志表';
 COMMENT
 ON COLUMN operation_logs.id IS '主键';
 COMMENT
@@ -557,29 +559,33 @@ CREATE TABLE fields
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name               varchar(255),
-    type               varchar(255),
-    length             varchar(255),
+    data_type          varchar(255),
+    length             int2,
+    schema_id          bigint,
     nullable           bool,
     is_unique          bool,
     queryable          bool,
+    editable          bool,
     comment            text,
-    field_type         varchar(255),
-    show_type          varchar(255),
-    description        text,
+    field_type         bigint,
+    form_type          bigint,
     enabled            bool         NOT NULL DEFAULT true,
     created_by         varchar(50),
     created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     last_modified_by   varchar(50),
-    last_modified_date timestamp(6)
+    last_modified_date timestamp(6),
+    CONSTRAINT fk_fields_schemas FOREIGN KEY (schema_id) references schemas (id)
 );
 COMMENT
 ON COLUMN fields.id IS '主键，自动生成';
 COMMENT
 ON COLUMN fields.name IS '字段名称';
 COMMENT
-ON COLUMN fields.type IS '字段类型';
+ON COLUMN fields.data_type IS '字段类型';
 COMMENT
 ON COLUMN fields.length IS '字段长度';
+COMMENT
+ON COLUMN fields.schema_id IS 'schema主键';
 COMMENT
 ON COLUMN fields.nullable IS '是否允许为空';
 COMMENT
@@ -587,23 +593,23 @@ ON COLUMN fields.is_unique IS '是否唯一';
 COMMENT
 ON COLUMN fields.queryable IS '是否可查询';
 COMMENT
-ON COLUMN fields.comment IS '字段的注释';
+ON COLUMN fields.editable IS '是否可编辑';
 COMMENT
-ON COLUMN fields.field_type IS '字段的数据类型';
+ON COLUMN fields.comment IS '注释';
 COMMENT
-ON COLUMN fields.show_type IS '字段的显示类型';
+ON COLUMN fields.field_type IS '属性类型';
 COMMENT
-ON COLUMN fields.description IS '字段的描述';
+ON COLUMN fields.form_type IS '表单类型';
 COMMENT
-ON COLUMN operation_logs.enabled IS '是否启用';
+ON COLUMN fields.enabled IS '是否启用';
 COMMENT
-ON COLUMN operation_logs.created_by IS '创建者';
+ON COLUMN fields.created_by IS '创建者';
 COMMENT
-ON COLUMN operation_logs.created_date IS '创建时间';
+ON COLUMN fields.created_date IS '创建时间';
 COMMENT
-ON COLUMN operation_logs.last_modified_by IS '最后修改者';
+ON COLUMN fields.last_modified_by IS '最后修改者';
 COMMENT
-ON COLUMN operation_logs.last_modified_date IS '最后修改时间';
+ON COLUMN fields.last_modified_date IS '最后修改时间';
 COMMENT
 ON TABLE fields IS '属性配置表';
 
@@ -635,15 +641,15 @@ ON COLUMN scripts.version IS '版本';
 COMMENT
 ON COLUMN scripts.description IS '表的描述';
 COMMENT
-ON COLUMN operation_logs.enabled IS '是否启用';
+ON COLUMN scripts.enabled IS '是否启用';
 COMMENT
-ON COLUMN operation_logs.created_by IS '创建者';
+ON COLUMN scripts.created_by IS '创建者';
 COMMENT
-ON COLUMN operation_logs.created_date IS '创建时间';
+ON COLUMN scripts.created_date IS '创建时间';
 COMMENT
-ON COLUMN operation_logs.last_modified_by IS '最后修改者';
+ON COLUMN scripts.last_modified_by IS '最后修改者';
 COMMENT
-ON COLUMN operation_logs.last_modified_date IS '最后修改时间';
+ON COLUMN scripts.last_modified_date IS '最后修改时间';
 COMMENT
 ON TABLE scripts IS '脚本配置表';
 
@@ -655,9 +661,8 @@ CREATE TABLE schemas
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name               varchar(255),
-    comment            text,
     reference          varchar(255),
-    description        text,
+    class_name         varchar(50),
     enabled            bool         NOT NULL DEFAULT true,
     created_by         varchar(50),
     created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -669,21 +674,19 @@ ON COLUMN schemas.id IS '主键，自动生成';
 COMMENT
 ON COLUMN schemas.name IS '表名称';
 COMMENT
-ON COLUMN schemas.comment IS '表的注释';
-COMMENT
 ON COLUMN schemas.reference IS '包引用';
 COMMENT
-ON COLUMN schemas.description IS '表的描述';
+ON COLUMN schemas.class_name IS '类名';
 COMMENT
-ON COLUMN operation_logs.enabled IS '是否启用';
+ON COLUMN schemas.enabled IS '是否启用';
 COMMENT
-ON COLUMN operation_logs.created_by IS '创建者';
+ON COLUMN schemas.created_by IS '创建者';
 COMMENT
-ON COLUMN operation_logs.created_date IS '创建时间';
+ON COLUMN schemas.created_date IS '创建时间';
 COMMENT
-ON COLUMN operation_logs.last_modified_by IS '最后修改者';
+ON COLUMN schemas.last_modified_by IS '最后修改者';
 COMMENT
-ON COLUMN operation_logs.last_modified_date IS '最后修改时间';
+ON COLUMN schemas.last_modified_date IS '最后修改时间';
 COMMENT
 ON TABLE schemas IS 'schema配置表';
 
@@ -731,3 +734,40 @@ ON COLUMN file_records.last_modified_date IS '最后修改时间';
 COMMENT
 ON TABLE file_records IS '文件记录表';
 
+
+-- ----------------------------
+-- Table structure for templates
+-- ----------------------------
+DROP TABLE IF EXISTS templates;
+CREATE TABLE templates
+(
+    id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name               varchar(255),
+    content            text,
+    type               bigint,
+    enabled            bool         NOT NULL DEFAULT true,
+    created_by         varchar(50),
+    created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_modified_by   varchar(50),
+    last_modified_date timestamp(6)
+);
+COMMENT
+ON COLUMN templates.id IS '主键，自动生成';
+COMMENT
+ON COLUMN templates.name IS '表名称';
+COMMENT
+ON COLUMN templates.content IS '模板内容';
+COMMENT
+ON COLUMN templates.type IS '类型';
+COMMENT
+ON COLUMN templates.enabled IS '是否启用';
+COMMENT
+ON COLUMN templates.created_by IS '创建者';
+COMMENT
+ON COLUMN templates.created_date IS '创建时间';
+COMMENT
+ON COLUMN templates.last_modified_by IS '最后修改者';
+COMMENT
+ON COLUMN templates.last_modified_date IS '最后修改时间';
+COMMENT
+ON TABLE templates IS '模板表';

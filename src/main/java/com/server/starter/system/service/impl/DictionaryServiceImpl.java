@@ -137,7 +137,7 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
      * 类型转换
      *
      * @param dictionary 信息
-     * @return DictionaryVO 输出对象
+     * @return VO 输出对象
      */
     private DictionaryVO convert(Dictionary dictionary) {
         return Converter.convert(dictionary, DictionaryVO.class);

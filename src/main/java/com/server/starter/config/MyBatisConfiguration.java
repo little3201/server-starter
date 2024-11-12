@@ -7,8 +7,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.data.jdbc.repository.config.MyBatisJdbcConfiguration;
 
 import javax.sql.DataSource;
@@ -20,7 +18,6 @@ import java.io.IOException;
  * @author wq li
  */
 @Configuration(proxyBeanMethods = false)
-@EnableJdbcRepositories(basePackages = "com.server.starter.**.repository")
 @Import(MyBatisJdbcConfiguration.class)
 @MapperScan(basePackages = "com.server.starter.**.mapper")
 public class MyBatisConfiguration {
@@ -30,9 +27,14 @@ public class MyBatisConfiguration {
         // Configure MyBatis here
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
-        factoryBean.setMapperLocations(
-                new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml")
-        );
+
+        // 创建 MyBatis 配置对象
+        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        // 设置驼峰命名转换
+        configuration.setMapUnderscoreToCamelCase(true);
+
+        // 将配置对象设置到 SqlSessionFactoryBean 中
+        factoryBean.setConfiguration(configuration);
         return factoryBean;
     }
 
