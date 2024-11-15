@@ -118,10 +118,10 @@ public class DictionaryController {
      * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
      */
     @GetMapping("/{superiorId}/exist")
-    public ResponseEntity<Boolean> exist(@PathVariable Long superiorId, @RequestParam String name) {
+    public ResponseEntity<Boolean> exist(@PathVariable Long superiorId, @RequestParam String name, Long id) {
         boolean exist;
         try {
-            exist = dictionaryService.exist(superiorId, name);
+            exist = dictionaryService.exist(superiorId, name, id);
         } catch (Exception e) {
             logger.info("Query dictionary exist occurred an error: ", e);
             return ResponseEntity.noContent().build();

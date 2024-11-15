@@ -94,9 +94,9 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
      * {@inheritDoc}
      */
     @Override
-    public boolean exist(Long superiorId, String name) {
+    public boolean exist(Long superiorId, String name, Long id) {
         Assert.hasText(name, "name must not be blank.");
-        return dictionaryRepository.existsBySuperiorIdAndName(superiorId, name);
+        return dictionaryRepository.existsBySuperiorIdAndNameAndIdNot(superiorId, name, id);
     }
 
     /**

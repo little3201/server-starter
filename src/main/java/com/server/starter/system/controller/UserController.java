@@ -119,10 +119,10 @@ public class UserController {
      * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
      */
     @GetMapping("/exist")
-    public ResponseEntity<Boolean> exist(@RequestParam String username) {
+    public ResponseEntity<Boolean> exist(@RequestParam String username, Long id) {
         boolean exist;
         try {
-            exist = userService.exist(username);
+            exist = userService.exist(username, id);
         } catch (Exception e) {
             logger.info("Query dictionary exist occurred an error: ", e);
             return ResponseEntity.noContent().build();

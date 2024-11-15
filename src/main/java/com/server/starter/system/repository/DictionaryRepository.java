@@ -49,9 +49,10 @@ public interface DictionaryRepository extends CrudRepository<Dictionary, Long>,
      *
      * @param superiorId superior id
      * @param name       名称
+     * @param id         主键
      * @return true-存在，false-否
      */
-    boolean existsBySuperiorIdAndName(Long superiorId, String name);
+    boolean existsBySuperiorIdAndNameAndIdNot(Long superiorId, String name, Long id);
 
     /**
      * 查询下级信息

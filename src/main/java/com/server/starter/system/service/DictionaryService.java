@@ -51,5 +51,5 @@ public interface DictionaryService extends ServletBasicService<DictionaryDTO, Di
      */
     List<DictionaryVO> subset(Long id);
 
-    boolean exist(Long superiorId, String name);
+    boolean exist(Long superiorId, String name, Long id);
 }

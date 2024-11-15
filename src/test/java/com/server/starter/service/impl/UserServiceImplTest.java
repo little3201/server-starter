@@ -109,7 +109,7 @@ class UserServiceImplTest {
 
     @Test
     void exist() {
-        given(this.userRepository.existsByUsername(Mockito.anyString())).willReturn(Boolean.TRUE);
+        given(this.userRepository.existsByUsernameAndIdNot(Mockito.anyString())).willReturn(Boolean.TRUE);
 
         boolean exist = userService.exist("test");
 
@@ -118,7 +118,7 @@ class UserServiceImplTest {
 
     @Test
     void exist_false() {
-        given(this.userRepository.existsByUsername(Mockito.anyString())).willReturn(false);
+        given(this.userRepository.existsByUsernameAndIdNot(Mockito.anyString())).willReturn(false);
 
         boolean exist = userService.exist("test");
 

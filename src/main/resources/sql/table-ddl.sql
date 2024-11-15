@@ -558,17 +558,19 @@ DROP TABLE IF EXISTS fields;
 CREATE TABLE fields
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name               varchar(255),
-    data_type          varchar(255),
+    name               varchar(127),
+    column_name        varchar(127),
+    data_type          varchar(127),
     length             int2,
+    field_type         varchar(16),
+    form_type          varchar(16),
+    ts_type            varchar(16),
     schema_id          bigint,
     nullable           bool,
     is_unique          bool,
     queryable          bool,
-    editable          bool,
+    editable           bool,
     comment            text,
-    field_type         bigint,
-    form_type          bigint,
     enabled            bool         NOT NULL DEFAULT true,
     created_by         varchar(50),
     created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -579,13 +581,21 @@ CREATE TABLE fields
 COMMENT
 ON COLUMN fields.id IS '主键，自动生成';
 COMMENT
-ON COLUMN fields.name IS '字段名称';
+ON COLUMN fields.schema_id IS 'schema主键';
+COMMENT
+ON COLUMN fields.name IS '属性名';
+COMMENT
+ON COLUMN fields.column_name IS '字段名';
 COMMENT
 ON COLUMN fields.data_type IS '字段类型';
 COMMENT
 ON COLUMN fields.length IS '字段长度';
 COMMENT
-ON COLUMN fields.schema_id IS 'schema主键';
+ON COLUMN fields.field_type IS '属性类型';
+COMMENT
+ON COLUMN fields.form_type IS '表单类型';
+COMMENT
+ON COLUMN fields.ts_type IS 'ts类型';
 COMMENT
 ON COLUMN fields.nullable IS '是否允许为空';
 COMMENT
@@ -596,10 +606,6 @@ COMMENT
 ON COLUMN fields.editable IS '是否可编辑';
 COMMENT
 ON COLUMN fields.comment IS '注释';
-COMMENT
-ON COLUMN fields.field_type IS '属性类型';
-COMMENT
-ON COLUMN fields.form_type IS '表单类型';
 COMMENT
 ON COLUMN fields.enabled IS '是否启用';
 COMMENT
@@ -662,7 +668,8 @@ CREATE TABLE schemas
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name               varchar(255),
     reference          varchar(255),
-    class_name         varchar(50),
+    domain             varchar(50),
+    templates          varchar[],
     enabled            bool         NOT NULL DEFAULT true,
     created_by         varchar(50),
     created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -676,7 +683,9 @@ ON COLUMN schemas.name IS '表名称';
 COMMENT
 ON COLUMN schemas.reference IS '包引用';
 COMMENT
-ON COLUMN schemas.class_name IS '类名';
+ON COLUMN schemas.domain IS '类名';
+COMMENT
+ON COLUMN schemas.templates IS '模板';
 COMMENT
 ON COLUMN schemas.enabled IS '是否启用';
 COMMENT
@@ -745,6 +754,7 @@ CREATE TABLE templates
     name               varchar(255),
     content            text,
     type               bigint,
+    suffix             varchar(16),
     enabled            bool         NOT NULL DEFAULT true,
     created_by         varchar(50),
     created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -759,6 +769,8 @@ COMMENT
 ON COLUMN templates.content IS '模板内容';
 COMMENT
 ON COLUMN templates.type IS '类型';
+COMMENT
+ON COLUMN templates.suffix IS '后缀';
 COMMENT
 ON COLUMN templates.enabled IS '是否启用';
 COMMENT

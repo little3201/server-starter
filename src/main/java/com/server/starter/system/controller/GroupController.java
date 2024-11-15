@@ -126,10 +126,10 @@ public class GroupController {
      * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
      */
     @GetMapping("/exist")
-    public ResponseEntity<Boolean> exist(@RequestParam String name) {
+    public ResponseEntity<Boolean> exist(@RequestParam String name, Long id) {
         boolean exist;
         try {
-            exist = groupService.exist(name);
+            exist = groupService.exist(name, id);
         } catch (Exception e) {
             logger.info("Query dictionary exist occurred an error: ", e);
             return ResponseEntity.noContent().build();

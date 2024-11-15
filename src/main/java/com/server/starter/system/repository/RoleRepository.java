@@ -38,7 +38,7 @@ public interface RoleRepository extends CrudRepository<Role, Long>,
      * @param name 名称
      * @return true-存在，false-否
      */
-    boolean existsByName(String name);
+    boolean existsByNameAndIdNot(String name, Long id);
 
     @Modifying
     @Query("UPDATE roles SET enabled = NOT enabled WHERE id = :id")

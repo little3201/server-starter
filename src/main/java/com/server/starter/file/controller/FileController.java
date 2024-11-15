@@ -78,25 +78,6 @@ public class FileController {
     }
 
     /**
-     * 是否存在
-     *
-     * @param name 名称
-     * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
-     */
-    @PreAuthorize("hasAuthority('SCOPE_files:read')")
-    @GetMapping("/exist")
-    public ResponseEntity<Boolean> exist(@RequestParam String name) {
-        boolean exist;
-        try {
-            exist = fileRecordService.exist(name);
-        } catch (Exception e) {
-            logger.info("Query region exist occurred an error: ", e);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(exist);
-    }
-
-    /**
      * 添加信息
      *
      * @param dto 要添加的数据

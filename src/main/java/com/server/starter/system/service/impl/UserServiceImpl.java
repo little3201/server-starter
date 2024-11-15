@@ -87,10 +87,10 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public boolean exist(String username) {
+    public boolean exist(String username, Long id) {
         Assert.hasText(username, "username must not be blank.");
 
-        return userRepository.existsByUsername(username);
+        return userRepository.existsByUsernameAndIdNot(username, id);
     }
 
     /**
