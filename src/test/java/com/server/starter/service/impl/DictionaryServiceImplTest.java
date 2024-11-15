@@ -105,9 +105,9 @@ class DictionaryServiceImplTest {
 
     @Test
     void exist() {
-        given(this.dictionaryRepository.existsBySuperiorIdAndNameAndIdNot(Mockito.anyLong(), Mockito.anyString())).willReturn(true);
+        given(this.dictionaryRepository.existsBySuperiorIdAndNameAndIdNot(Mockito.anyLong(), Mockito.anyString(), Mockito.anyLong())).willReturn(true);
 
-        boolean exist = dictionaryService.exist(1L, "male");
+        boolean exist = dictionaryService.exist(1L, "male", 1L);
 
         Assertions.assertTrue(exist);
     }
