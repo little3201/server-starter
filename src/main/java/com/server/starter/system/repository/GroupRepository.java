@@ -54,6 +54,14 @@ public interface GroupRepository extends ListCrudRepository<Group, Long>,
      * @param name 名称
      * @return true-存在，false-否
      */
+    boolean existsByName(String name);
+
+    /**
+     * 是否存在
+     *
+     * @param name 名称
+     * @return true-存在，false-否
+     */
     boolean existsByNameAndIdNot(String name, Long id);
 
     @Modifying

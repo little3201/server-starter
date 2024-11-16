@@ -140,6 +140,10 @@ public class DictionaryController {
     public ResponseEntity<DictionaryVO> create(@RequestBody @Valid DictionaryDTO dto) {
         DictionaryVO vo;
         try {
+            boolean existed = dictionaryService.exist(dto.getSuperiorId(), dto.getName(), null);
+            if (existed) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
             vo = dictionaryService.create(dto);
         } catch (Exception e) {
             logger.error("Create dictionary occurred an error: ", e);
@@ -160,6 +164,10 @@ public class DictionaryController {
     public ResponseEntity<DictionaryVO> modify(@PathVariable Long id, @RequestBody @Valid DictionaryDTO dto) {
         DictionaryVO vo;
         try {
+            boolean existed = dictionaryService.exist(dto.getSuperiorId(), dto.getName(), id);
+            if (existed) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
             vo = dictionaryService.modify(id, dto);
         } catch (Exception e) {
             logger.error("Modify dictionary occurred an error: ", e);

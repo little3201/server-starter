@@ -91,6 +91,9 @@ public class GroupServiceImpl extends ServletAbstractTreeNodeService<Group> impl
 
     @Override
     public boolean exist(String name, Long id) {
+        if (id == null) {
+            return groupRepository.existsByName(name);
+        }
         return groupRepository.existsByNameAndIdNot(name, id);
     }
 

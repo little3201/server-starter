@@ -754,7 +754,6 @@ CREATE TABLE templates
     name               varchar(255),
     content            text,
     type               bigint,
-    suffix             varchar(16),
     enabled            bool         NOT NULL DEFAULT true,
     created_by         varchar(50),
     created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -769,8 +768,6 @@ COMMENT
 ON COLUMN templates.content IS '模板内容';
 COMMENT
 ON COLUMN templates.type IS '类型';
-COMMENT
-ON COLUMN templates.suffix IS '后缀';
 COMMENT
 ON COLUMN templates.enabled IS '是否启用';
 COMMENT

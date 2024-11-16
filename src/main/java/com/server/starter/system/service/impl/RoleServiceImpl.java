@@ -73,11 +73,17 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public boolean exist(String name, Long id) {
+        Assert.hasText(name, "name must not be blank.");
+        if (id == null) {
+            return roleRepository.existsByName(name);
+        }
         return roleRepository.existsByNameAndIdNot(name, id);
     }
 
     @Override
     public boolean toggleStatus(Long id) {
+        Assert.notNull(id, "id must not be null.");
+
         return roleRepository.updateEnabledById(id);
     }
 

@@ -40,6 +40,14 @@ public interface UserRepository extends CrudRepository<User, Long>,
      * 是否存在
      *
      * @param username 用户名
+     * @return true-存在，false-否
+     */
+    boolean existsByUsername(String username);
+
+    /**
+     * 是否存在
+     *
+     * @param username 用户名
      * @param id       主键
      * @return true-存在，false-否
      */

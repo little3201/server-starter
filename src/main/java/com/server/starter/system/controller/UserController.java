@@ -141,6 +141,10 @@ public class UserController {
     public ResponseEntity<UserVO> create(@RequestBody @Valid UserDTO dto) {
         UserVO vo;
         try {
+            boolean existed = userService.exist(dto.getUsername(), null);
+            if (existed) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
             vo = userService.create(dto);
         } catch (Exception e) {
             logger.error("Create user occurred an error: ", e);
@@ -162,6 +166,10 @@ public class UserController {
                                          @RequestBody @Valid UserDTO dto) {
         UserVO vo;
         try {
+            boolean existed = userService.exist(dto.getUsername(), id);
+            if (existed) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
             vo = userService.modify(id, dto);
         } catch (Exception e) {
             logger.error("Modify user occurred an error: ", e);

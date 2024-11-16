@@ -148,6 +148,10 @@ public class GroupController {
     public ResponseEntity<GroupVO> create(@RequestBody @Valid GroupDTO dto) {
         GroupVO groupVO;
         try {
+            boolean existed = groupService.exist(dto.getName(), null);
+            if (existed) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
             groupVO = groupService.create(dto);
         } catch (Exception e) {
             logger.error("Create group occurred an error: ", e);
@@ -168,6 +172,10 @@ public class GroupController {
     public ResponseEntity<GroupVO> modify(@PathVariable Long id, @RequestBody GroupDTO dto) {
         GroupVO groupVO;
         try {
+            boolean existed = groupService.exist(dto.getName(), id);
+            if (existed) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
             groupVO = groupService.modify(id, dto);
         } catch (Exception e) {
             logger.error("Modify group occurred an error: ", e);

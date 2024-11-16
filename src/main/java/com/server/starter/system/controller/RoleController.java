@@ -134,6 +134,10 @@ public class RoleController {
     public ResponseEntity<RoleVO> create(@RequestBody @Valid RoleDTO dto) {
         RoleVO vo;
         try {
+            boolean existed = roleService.exist(dto.getName(), null);
+            if (existed) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
             vo = roleService.create(dto);
         } catch (Exception e) {
             logger.error("Create role occurred an error: ", e);
@@ -154,6 +158,10 @@ public class RoleController {
     public ResponseEntity<RoleVO> modify(@PathVariable Long id, @RequestBody @Valid RoleDTO dto) {
         RoleVO vo;
         try {
+            boolean existed = roleService.exist(dto.getName(), id);
+            if (existed) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
             vo = roleService.modify(id, dto);
         } catch (Exception e) {
             logger.error("Modify role occurred an error: ", e);
