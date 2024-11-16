@@ -17,7 +17,6 @@
 package com.server.starter.system.repository;
 
 import com.server.starter.system.domain.Role;
-import io.micrometer.common.lang.Nullable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -47,7 +46,7 @@ public interface RoleRepository extends CrudRepository<Role, Long>,
      * @param name 名称
      * @return true-存在，false-否
      */
-    boolean existsByNameAndIdNot(String name, @Nullable Long id);
+    boolean existsByNameAndIdNot(String name, Long id);
 
     @Modifying
     @Query("UPDATE roles SET enabled = NOT enabled WHERE id = :id")
