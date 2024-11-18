@@ -27,7 +27,7 @@ import jakarta.validation.constraints.NotBlank;
 public abstract class RoleBO {
 
 
-    @NotBlank(message = "name must not be blank.")
+    @NotBlank
     private String name;
 
     /**

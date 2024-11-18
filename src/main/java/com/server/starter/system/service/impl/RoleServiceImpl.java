@@ -109,7 +109,7 @@ public class RoleServiceImpl implements RoleService {
                     role = roleRepository.save(role);
                     return this.convert(role);
                 })
-                .orElse(null);
+                .orElseThrow();
     }
 
     /**

@@ -17,14 +17,15 @@
 
 package com.server.starter.service;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * Servlet service interface for basic CRUD operations.
  *
- * @param <D> DTO type for input data
- * @param <V> VO type for output data
+ * @param <D> DTO type for input data.
+ * @param <V> VO type for output data.
  * @since 0.1.2
  */
 public interface ServletBasicService<D, V> {
@@ -32,17 +33,17 @@ public interface ServletBasicService<D, V> {
     /**
      * Retrieves all records.
      *
-     * @return a list of all records
+     * @return a list of all records.
      */
-    default List<V> retrieve() {
+    default List<V> retrieve(List<Long> ids) {
         return Collections.emptyList();
     }
 
     /**
      * Fetches a record by its ID.
      *
-     * @param id the record ID
-     * @return the record, or null if not found
+     * @param id the record ID.
+     * @return the record, or null if not found.
      */
     default V fetch(Long id) {
         return null;
@@ -51,8 +52,8 @@ public interface ServletBasicService<D, V> {
     /**
      * Enable or Disable a record by its ID.
      *
-     * @param id the record ID
-     * @return true if the record enabled/disabled, false otherwise
+     * @param id the record ID.
+     * @return true if the record enabled/disabled, false otherwise.
      */
     default boolean toggleStatus(Long id) {
         return false;
@@ -61,8 +62,8 @@ public interface ServletBasicService<D, V> {
     /**
      * Checks if a record exists by it's field.
      *
-     * @param field the record's field
-     * @return true if the record exists, false otherwise
+     * @param field the record's field.
+     * @return true if the record exists, false otherwise.
      */
     default boolean exist(String field, Long id) {
         return false;
@@ -71,7 +72,7 @@ public interface ServletBasicService<D, V> {
     /**
      * Creates a new record.
      *
-     * @param d the DTO representing the new record
+     * @param d the DTO representing the new record.
      * @return the created record
      */
     default V create(D d) {
@@ -79,11 +80,21 @@ public interface ServletBasicService<D, V> {
     }
 
     /**
+     * Creates all given new record.
+     *
+     * @param dCollection the DTO representing the new records.
+     * @return the created record.
+     */
+    default List<V> createAll(Collection<D> dCollection) {
+        return Collections.emptyList();
+    }
+
+    /**
      * Updates an existing record by its ID.
      *
-     * @param id the record ID
-     * @param d  the DTO containing updated data
-     * @return the updated record
+     * @param id the record ID.
+     * @param d  the DTO containing updated data.
+     * @return the updated record.
      */
     default V modify(Long id, D d) {
         return null;
@@ -92,7 +103,7 @@ public interface ServletBasicService<D, V> {
     /**
      * Removes a record by its ID.
      *
-     * @param id the record ID
+     * @param id the record ID.
      */
     default void remove(Long id) {
     }

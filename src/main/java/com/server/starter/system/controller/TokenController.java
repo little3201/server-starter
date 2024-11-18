@@ -1,5 +1,6 @@
 package com.server.starter.system.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -25,7 +26,7 @@ public class TokenController {
     JwtEncoder encoder;
 
     @PostMapping("/signin")
-    public ResponseEntity<String> token(Authentication authentication) {
+    public ResponseEntity<String> token(Authentication authentication, HttpServletResponse response) {
         Instant now = Instant.now();
         long expiry = 36000L;
         // @formatter:off
@@ -43,11 +44,18 @@ public class TokenController {
         // @formatter:on
         String jwtToken = this.encoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
+        // 设置 Cookie
+        response.setHeader("Set-Cookie", "logged_in=" + authentication.getName() +
+                "; HttpOnly; Secure; SameSite=Lax; Max-Age=86400; Path=/");
+
         return ResponseEntity.ok(jwtToken);
     }
 
     @PostMapping("/signout")
-    public ResponseEntity<Void> logout(Authentication authentication) {
+    public ResponseEntity<Void> logout(Authentication authentication, HttpServletResponse response) {
+        // 清除 Cookie
+        response.setHeader("Set-Cookie", "logged_in=; HttpOnly; Secure; SameSite=Lax; Max-Age=0; Path=/");
+
         authentication.setAuthenticated(false);
         return ResponseEntity.ok().build();
     }

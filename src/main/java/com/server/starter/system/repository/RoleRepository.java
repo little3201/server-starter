@@ -17,6 +17,8 @@
 package com.server.starter.system.repository;
 
 import com.server.starter.system.domain.Role;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -33,21 +35,37 @@ public interface RoleRepository extends CrudRepository<Role, Long>,
         PagingAndSortingRepository<Role, Long> {
 
     /**
-     * 是否存在
+     * Finds all records with name containing the specified string.
      *
-     * @param name 名称
-     * @return true-存在，false-否
+     * @param name     The name filter for the records.
+     * @param pageable The pagination information.
+     * @return A paginated list of templates.
+     */
+    Page<Role> findAllByNameContaining(String name, Pageable pageable);
+
+    /**
+     * Checks if a record exists by name.
+     *
+     * @param name The name of the record.
+     * @return true if the record exists, false otherwise.
      */
     boolean existsByName(String name);
 
     /**
-     * 是否存在
+     * Checks if a record exists by name, excluding a specific ID.
      *
-     * @param name 名称
-     * @return true-存在，false-否
+     * @param name The name of the record.
+     * @param id   The ID to exclude from the check.
+     * @return true if the record exists, false otherwise.
      */
     boolean existsByNameAndIdNot(String name, Long id);
 
+    /**
+     * Toggles the enabled status of a record by its ID.
+     *
+     * @param id The ID of the record.
+     * @return true if the update was successful, false otherwise.
+     */
     @Modifying
     @Query("UPDATE roles SET enabled = NOT enabled WHERE id = :id")
     boolean updateEnabledById(Long id);

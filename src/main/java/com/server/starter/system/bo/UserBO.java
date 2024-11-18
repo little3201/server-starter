@@ -28,11 +28,12 @@ import java.time.Instant;
  */
 public abstract class UserBO {
 
-    @NotBlank(message = "username is blank.")
+    @NotBlank
     private String username;
 
     private String fullName;
 
+    @NotBlank
     private String email;
 
     private String avatar;

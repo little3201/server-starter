@@ -53,11 +53,14 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public Page<UserVO> retrieve(int page, int size, String sortBy, boolean descending, String username) {
+    public Page<UserVO> retrieve(int page, int size, String sortBy, boolean descending, String name) {
         Sort sort = Sort.by(descending ? Sort.Direction.DESC : Sort.Direction.ASC,
                 StringUtils.hasText(sortBy) ? sortBy : "id");
         Pageable pageable = PageRequest.of(page, size, sort);
 
+        if (StringUtils.hasText(name)) {
+            return userRepository.findAllByUsernameContaining(name, pageable).map(this::convert);
+        }
         return userRepository.findAll(pageable).map(this::convert);
     }
 
@@ -120,7 +123,7 @@ public class UserServiceImpl implements UserService {
                     user = userRepository.save(user);
                     return this.convert(user);
                 })
-                .orElse(null);
+                .orElseThrow();
     }
 
     /**

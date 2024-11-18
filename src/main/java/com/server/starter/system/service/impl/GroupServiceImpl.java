@@ -124,7 +124,7 @@ public class GroupServiceImpl extends ServletAbstractTreeNodeService<Group> impl
                     group = groupRepository.save(group);
                     return this.convert(group);
                 })
-                .orElse(null);
+                .orElseThrow();
     }
 
     /**

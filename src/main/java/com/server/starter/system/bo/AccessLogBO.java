@@ -26,9 +26,6 @@ public abstract class AccessLogBO {
 
     private String url;
 
-    /**
-     * HTTP方法
-     */
     private String httpMethod;
 
     private String params;

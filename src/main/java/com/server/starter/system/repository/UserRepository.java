@@ -17,6 +17,8 @@
 package com.server.starter.system.repository;
 
 import com.server.starter.system.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -34,25 +36,46 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Long>,
         PagingAndSortingRepository<User, Long> {
 
+    /**
+     * Finds all records with username or full_name containing the specified string.
+     *
+     * @param name     The name filter for the records.
+     * @param pageable The pagination information.
+     * @return A paginated list of templates.
+     */
+    Page<User> findAllByUsernameContaining(String name, Pageable pageable);
+
+    /**
+     * Finds a record by username.
+     *
+     * @param username The username of the record.
+     * @return An Optional containing the record if found, or an empty Optional if not found.
+     */
     Optional<User> findByUsername(String username);
 
     /**
-     * 是否存在
+     * Checks if a record exists by username.
      *
-     * @param username 用户名
-     * @return true-存在，false-否
+     * @param username The username of the record.
+     * @return true if the record exists, false otherwise.
      */
     boolean existsByUsername(String username);
 
     /**
-     * 是否存在
+     * Checks if a record exists by username, excluding a specific ID.
      *
-     * @param username 用户名
-     * @param id       主键
-     * @return true-存在，false-否
+     * @param username The username of the record.
+     * @param id       The ID to exclude from the check.
+     * @return true if the record exists, false otherwise.
      */
     boolean existsByUsernameAndIdNot(String username, Long id);
 
+    /**
+     * Toggles the enabled status of a record by its ID.
+     *
+     * @param id The ID of the record.
+     * @return true if the update was successful, false otherwise.
+     */
     @Modifying
     @Query("UPDATE users SET enabled = NOT enabled WHERE id = :id")
     boolean updateEnabledById(Long id);

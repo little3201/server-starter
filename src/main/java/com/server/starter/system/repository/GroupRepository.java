@@ -35,35 +35,44 @@ public interface GroupRepository extends ListCrudRepository<Group, Long>,
         PagingAndSortingRepository<Group, Long> {
 
     /**
-     * <p>findAllBySuperiorIdIsNull.</p>
+     * Finds all records where the superior ID is null.
      *
-     * @return a {@link Page} object
+     * @param pageable The pagination information.
+     * @return A paginated list of records.
      */
     Page<Group> findAllBySuperiorIdIsNull(Pageable pageable);
 
     /**
-     * <p>findAllBySuperiorId.</p>
+     * Finds all records where the superior ID.
      *
-     * @return a {@link Page} object
+     * @param pageable The pagination information.
+     * @return A paginated list of records.
      */
     Page<Group> findAllBySuperiorId(Long superiorId, Pageable pageable);
 
     /**
-     * 是否存在
+     * Checks if a record exists by name.
      *
-     * @param name 名称
-     * @return true-存在，false-否
+     * @param name The name of the record.
+     * @return true if the record exists, false otherwise.
      */
     boolean existsByName(String name);
 
     /**
-     * 是否存在
+     * Checks if a record exists by name, excluding a specific ID.
      *
-     * @param name 名称
-     * @return true-存在，false-否
+     * @param name The name of the record.
+     * @param id   The ID to exclude from the check.
+     * @return true if the record exists, false otherwise.
      */
     boolean existsByNameAndIdNot(String name, Long id);
 
+    /**
+     * Toggles the enabled status of a record by its ID.
+     *
+     * @param id The ID of the record.
+     * @return true if the update was successful, false otherwise.
+     */
     @Modifying
     @Query("UPDATE groups SET enabled = NOT enabled WHERE id = :id")
     boolean updateEnabledById(Long id);

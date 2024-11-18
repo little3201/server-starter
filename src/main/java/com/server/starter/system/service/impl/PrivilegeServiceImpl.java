@@ -23,7 +23,6 @@ import com.server.starter.system.domain.Privilege;
 import com.server.starter.system.domain.RoleMembers;
 import com.server.starter.system.domain.RolePrivileges;
 import com.server.starter.system.dto.PrivilegeDTO;
-import com.server.starter.system.mapper.PrivilegeMapper;
 import com.server.starter.system.repository.PrivilegeRepository;
 import com.server.starter.system.repository.RoleMembersRepository;
 import com.server.starter.system.repository.RolePrivilegesRepository;
@@ -51,19 +50,18 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
     public final RoleMembersRepository roleMembersRepository;
     public final RolePrivilegesRepository rolePrivilegesRepository;
     private final PrivilegeRepository privilegeRepository;
-    private final PrivilegeMapper privilegeMapper;
 
     /**
-     * <p>Constructor for PrivilegeServiceImpl.</p>
+     * Constructor for PrivilegeServiceImpl.
      *
+     * @param roleMembersRepository    a {@link RoleMembersRepository} object
      * @param rolePrivilegesRepository a {@link RolePrivilegesRepository} object
      * @param privilegeRepository      a {@link PrivilegeRepository} object
      */
-    public PrivilegeServiceImpl(RoleMembersRepository roleMembersRepository, RolePrivilegesRepository rolePrivilegesRepository, PrivilegeRepository privilegeRepository, PrivilegeMapper privilegeMapper) {
+    public PrivilegeServiceImpl(RoleMembersRepository roleMembersRepository, RolePrivilegesRepository rolePrivilegesRepository, PrivilegeRepository privilegeRepository) {
         this.roleMembersRepository = roleMembersRepository;
         this.rolePrivilegesRepository = rolePrivilegesRepository;
         this.privilegeRepository = privilegeRepository;
-        this.privilegeMapper = privilegeMapper;
     }
 
     /**
@@ -121,7 +119,7 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
 
     @Override
     public boolean toggleStatus(Long id) {
-        return privilegeMapper.updateEnabledById(id);
+        return privilegeRepository.updateEnabledById(id);
     }
 
     /**
@@ -135,7 +133,7 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
                     privilege = privilegeRepository.save(privilege);
                     return this.convert(privilege);
                 })
-                .orElse(null);
+                .orElseThrow();
     }
 
     /**

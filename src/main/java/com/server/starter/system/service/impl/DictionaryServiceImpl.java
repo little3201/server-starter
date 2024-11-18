@@ -124,7 +124,7 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
                     dictionary = dictionaryRepository.save(dictionary);
                     return this.convert(dictionary);
                 })
-                .orElse(null);
+                .orElseThrow();
     }
 
     /**

@@ -36,8 +36,8 @@ public interface MessageService extends ServletBasicService<MessageDTO, MessageV
      * @param size       The number of records per page.
      * @param sortBy     The field to sort by. If null, records are unsorted.
      * @param descending Whether sorting should be in descending order.
+     * @param title       The title filter for the records.
      * @return A paginated list of records.
-     * @since 0.3.0
      */
     Page<MessageVO> retrieve(int page, int size, String sortBy, boolean descending, String title);
 

@@ -27,14 +27,11 @@ import jakarta.validation.constraints.NotBlank;
 public abstract class DictionaryBO {
 
 
-    @NotBlank(message = "name must not be blank.")
+    @NotBlank
     private String name;
 
     private Long superiorId;
 
-    /**
-     * 描述
-     */
     private String description;
 
 

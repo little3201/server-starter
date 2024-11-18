@@ -19,7 +19,6 @@ package com.server.starter.system.bo;
 
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 
@@ -31,8 +30,7 @@ import java.util.Set;
 public abstract class PrivilegeBO {
 
 
-    @NotBlank(message = "name must not be blank.")
-    @Size(max = 32, message = "name max length is 32.")
+    @NotBlank
     private String name;
 
     private Long superiorId;

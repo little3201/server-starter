@@ -38,9 +38,10 @@ public interface DictionaryRepository extends CrudRepository<Dictionary, Long>,
         PagingAndSortingRepository<Dictionary, Long> {
 
     /**
-     * <p>findAllBySuperiorIdIsNull.</p>
+     * Finds all records where the superior ID is null.
      *
-     * @return a {@link Page} object
+     * @param pageable The pagination information.
+     * @return A paginated list of records.
      */
     Page<Dictionary> findAllBySuperiorIdIsNull(Pageable pageable);
 
