@@ -69,6 +69,6 @@ public interface PrivilegeRepository extends ListCrudRepository<Privilege, Long>
      * @return true if the update was successful, false otherwise.
      */
     @Modifying
-    @Query("UPDATE privileges SET enabled = NOT enabled WHERE id = #{id}")
+    @Query("UPDATE privileges SET enabled = NOT enabled WHERE id = :id")
     boolean updateEnabledById(Long id);
 }
