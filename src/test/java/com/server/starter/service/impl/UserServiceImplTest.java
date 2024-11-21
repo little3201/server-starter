@@ -16,10 +16,11 @@
  */
 package com.server.starter.service.impl;
 
-import com.server.starter.domain.User;
-import com.server.starter.dto.UserDTO;
-import com.server.starter.repository.UserRepository;
-import com.server.starter.vo.UserVO;
+import com.server.starter.system.domain.User;
+import com.server.starter.system.dto.UserDTO;
+import com.server.starter.system.repository.UserRepository;
+import com.server.starter.system.service.impl.UserServiceImpl;
+import com.server.starter.system.vo.UserVO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -107,21 +108,21 @@ class UserServiceImplTest {
     }
 
     @Test
-    void exist() {
-        given(this.userRepository.existsByUsername(Mockito.anyString())).willReturn(Boolean.TRUE);
+    void exists() {
+        given(this.userRepository.existsByUsernameAndIdNot(Mockito.anyString(), Mockito.anyLong())).willReturn(Boolean.TRUE);
 
-        boolean exist = userService.exist("test");
+        boolean exists = userService.exists("test", 1L);
 
-        Assertions.assertTrue(exist);
+        Assertions.assertTrue(exists);
     }
 
     @Test
     void exist_false() {
-        given(this.userRepository.existsByUsername(Mockito.anyString())).willReturn(false);
+        given(this.userRepository.existsByUsernameAndIdNot(Mockito.anyString(), Mockito.anyLong())).willReturn(false);
 
-        boolean exist = userService.exist("test");
+        boolean exists = userService.exists("test", 1L);
 
-        Assertions.assertFalse(exist);
+        Assertions.assertFalse(exists);
     }
 
     @Test

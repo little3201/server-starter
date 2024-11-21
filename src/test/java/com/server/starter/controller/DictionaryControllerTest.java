@@ -18,9 +18,10 @@
 package com.server.starter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.starter.dto.DictionaryDTO;
-import com.server.starter.service.DictionaryService;
-import com.server.starter.vo.DictionaryVO;
+import com.server.starter.system.controller.DictionaryController;
+import com.server.starter.system.dto.DictionaryDTO;
+import com.server.starter.system.service.DictionaryService;
+import com.server.starter.system.vo.DictionaryVO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -118,6 +119,14 @@ class DictionaryControllerTest {
     }
 
     @Test
+    void subset_error() throws Exception {
+        given(this.dictionaryService.subset(Mockito.anyLong())).willThrow(new RuntimeException());
+
+        mvc.perform(get("/dictionaries/{id}/subset", Mockito.anyLong())).andExpect(status().isNoContent())
+                .andDo(print()).andReturn();
+    }
+
+    @Test
     void fetch() throws Exception {
         given(this.dictionaryService.fetch(Mockito.anyLong())).willReturn(dictionaryVO);
 
@@ -164,26 +173,22 @@ class DictionaryControllerTest {
 
 
     @Test
-    void exist() throws Exception {
-        given(this.dictionaryService.exist(Mockito.anyString())).willReturn(true);
+    void exists() throws Exception {
+        given(this.dictionaryService.exists(Mockito.anyLong(), Mockito.anyString(), Mockito.anyLong())).willReturn(true);
 
-        mvc.perform(get("/dictionaries/{name}/exist", "gender")).andExpect(status().isOk())
+        mvc.perform(get("/dictionaries/{superiorId}/exists", "1")
+                        .queryParam("name", "gender").queryParam("id", "1"))
+                .andExpect(status().isOk())
                 .andDo(print()).andReturn();
     }
 
     @Test
     void exist_error() throws Exception {
-        given(this.dictionaryService.exist(Mockito.anyString())).willThrow(new RuntimeException());
+        given(this.dictionaryService.exists(Mockito.anyLong(), Mockito.anyString(), Mockito.anyLong())).willThrow(new RuntimeException());
 
-        mvc.perform(get("/dictionaries/{name}/exist", "gender")).andExpect(status().isNoContent())
-                .andDo(print()).andReturn();
-    }
-
-    @Test
-    void lower_error() throws Exception {
-        given(this.dictionaryService.subset(Mockito.anyLong())).willThrow(new RuntimeException());
-
-        mvc.perform(get("/dictionaries/{id}/subset", Mockito.anyLong())).andExpect(status().isNoContent())
+        mvc.perform(get("/dictionaries/{superiorId}/exists", "1")
+                        .queryParam("name", "gender").queryParam("id", "1"))
+                .andExpect(status().isNoContent())
                 .andDo(print()).andReturn();
     }
 

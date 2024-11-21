@@ -1,25 +1,26 @@
 /*
- *  Copyright 2018-2024 little3201.
+ * Copyright (c) 2024.  little3201.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *       https://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 package com.server.starter.audit;
 
-import jakarta.persistence.*;
+
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Auditable;
+import org.springframework.data.relational.core.mapping.Column;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -38,14 +39,12 @@ import java.util.Optional;
  * @author wq li
  * @since 0.3.0
  */
-@MappedSuperclass
 public abstract class AuditMetadata implements Auditable<String, Long, Instant> {
 
     /**
      * Primary key of the entity, automatically generated.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
@@ -56,27 +55,27 @@ public abstract class AuditMetadata implements Auditable<String, Long, Instant> 
     /**
      * The username of the user who created the entity. Not updatable after the entity is created.
      */
-    @Column(name = "created_by", updatable = false, length = 50)
+    @Column("created_by")
     private String createdBy;
 
     /**
      * The timestamp when the entity was created. Not updatable after the entity is created.
      */
     @CreatedDate
-    @Column(name = "created_date", updatable = false)
+    @Column("created_date")
     private Instant createdDate;
 
     /**
      * The username of the user who last modified the entity. Only updatable when the entity is modified.
      */
-    @Column(name = "last_modified_by", insertable = false, length = 50)
+    @Column("last_modified_by")
     private String lastModifiedBy;
 
     /**
      * The timestamp when the entity was last modified. Only updatable when the entity is modified.
      */
     @LastModifiedDate
-    @Column(name = "last_modified_date", insertable = false)
+    @Column("last_modified_date")
     private Instant lastModifiedDate;
 
     /**

@@ -17,10 +17,11 @@
 
 package com.server.starter.service.impl;
 
-import com.server.starter.domain.AccessLog;
-import com.server.starter.dto.AccessLogDTO;
-import com.server.starter.repository.AccessLogRepository;
-import com.server.starter.vo.AccessLogVO;
+import com.server.starter.system.domain.AccessLog;
+import com.server.starter.system.dto.AccessLogDTO;
+import com.server.starter.system.repository.AccessLogRepository;
+import com.server.starter.system.service.impl.AccessLogServiceImpl;
+import com.server.starter.system.vo.AccessLogVO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

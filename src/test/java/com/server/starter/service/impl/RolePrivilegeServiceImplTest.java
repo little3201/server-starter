@@ -17,8 +17,9 @@
 
 package com.server.starter.service.impl;
 
-import com.server.starter.domain.RolePrivileges;
-import com.server.starter.repository.RolePrivilegesRepository;
+import com.server.starter.system.domain.RolePrivileges;
+import com.server.starter.system.repository.RolePrivilegesRepository;
+import com.server.starter.system.service.impl.RolePrivilegesServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

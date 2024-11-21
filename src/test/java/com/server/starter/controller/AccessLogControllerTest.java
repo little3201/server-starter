@@ -17,8 +17,9 @@
 
 package com.server.starter.controller;
 
-import com.server.starter.service.AccessLogService;
-import com.server.starter.vo.AccessLogVO;
+import com.server.starter.system.controller.AccessLogController;
+import com.server.starter.system.service.AccessLogService;
+import com.server.starter.system.vo.AccessLogVO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

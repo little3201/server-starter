@@ -18,11 +18,12 @@
 package com.server.starter.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.starter.dto.GroupDTO;
-import com.server.starter.service.GroupMembersService;
-import com.server.starter.service.GroupService;
-import com.server.starter.tree.TreeNode;
-import com.server.starter.vo.GroupVO;
+import com.server.starter.system.controller.GroupController;
+import com.server.starter.system.dto.GroupDTO;
+import com.server.starter.system.service.GroupMembersService;
+import com.server.starter.system.service.GroupService;
+import com.server.starter.domain.TreeNode;
+import com.server.starter.system.vo.GroupVO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

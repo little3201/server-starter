@@ -17,10 +17,11 @@
 
 package com.server.starter.service.impl;
 
-import com.server.starter.domain.Dictionary;
-import com.server.starter.dto.DictionaryDTO;
-import com.server.starter.repository.DictionaryRepository;
-import com.server.starter.vo.DictionaryVO;
+import com.server.starter.system.domain.Dictionary;
+import com.server.starter.system.dto.DictionaryDTO;
+import com.server.starter.system.repository.DictionaryRepository;
+import com.server.starter.system.service.impl.DictionaryServiceImpl;
+import com.server.starter.system.vo.DictionaryVO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,7 +69,7 @@ class DictionaryServiceImplTest {
     void retrieve() {
         Page<Dictionary> page = new PageImpl<>(List.of(Mockito.mock(Dictionary.class)));
 
-        given(this.dictionaryRepository.findAll(Mockito.any(Pageable.class))).willReturn(page);
+        given(this.dictionaryRepository.findAllBySuperiorIdIsNull(Mockito.any(Pageable.class))).willReturn(page);
 
         Page<DictionaryVO> voPage = dictionaryService.retrieve(0, 2, "id", true, "test");
 
@@ -103,12 +104,12 @@ class DictionaryServiceImplTest {
     }
 
     @Test
-    void exist() {
-        given(this.dictionaryRepository.existsByName(Mockito.anyString())).willReturn(true);
+    void exists() {
+        given(this.dictionaryRepository.existsBySuperiorIdAndNameAndIdNot(Mockito.anyLong(), Mockito.anyString(), Mockito.anyLong())).willReturn(true);
 
-        boolean exist = dictionaryService.exist("性别");
+        boolean exists = dictionaryService.exists(1L, "male", 1L);
 
-        Assertions.assertTrue(exist);
+        Assertions.assertTrue(exists);
     }
 
     @Test

@@ -17,10 +17,11 @@
 
 package com.server.starter.service.impl;
 
-import com.server.starter.domain.Role;
-import com.server.starter.dto.RoleDTO;
-import com.server.starter.repository.RoleRepository;
-import com.server.starter.vo.RoleVO;
+import com.server.starter.system.domain.Role;
+import com.server.starter.system.dto.RoleDTO;
+import com.server.starter.system.repository.RoleRepository;
+import com.server.starter.system.service.impl.RoleServiceImpl;
+import com.server.starter.system.vo.RoleVO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -17,9 +17,14 @@
 
 package com.server.starter.service.impl;
 
-import com.server.starter.domain.Privilege;
-import com.server.starter.repository.PrivilegeRepository;
-import com.server.starter.tree.TreeNode;
+import com.server.starter.domain.TreeNode;
+import com.server.starter.system.domain.Privilege;
+import com.server.starter.system.domain.RoleMembers;
+import com.server.starter.system.domain.RolePrivileges;
+import com.server.starter.system.repository.PrivilegeRepository;
+import com.server.starter.system.repository.RoleMembersRepository;
+import com.server.starter.system.repository.RolePrivilegesRepository;
+import com.server.starter.system.service.impl.PrivilegeServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,8 +34,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
 
@@ -41,6 +47,12 @@ import static org.mockito.BDDMockito.given;
  **/
 @ExtendWith(MockitoExtension.class)
 class PrivilegeServiceImplTest {
+
+    @Mock
+    private RoleMembersRepository roleMembersRepository;
+
+    @Mock
+    private RolePrivilegesRepository rolePrivilegesRepository;
 
     @Mock
     private PrivilegeRepository privilegeRepository;
@@ -54,9 +66,13 @@ class PrivilegeServiceImplTest {
 
     @Test
     void tree() {
-        given(this.privilegeRepository.findAll()).willReturn(Arrays.asList(Mockito.mock(Privilege.class), Mockito.mock(Privilege.class)));
+        given(this.roleMembersRepository.findAllByUsername(Mockito.anyString())).willReturn(Collections.singletonList(Mockito.mock(RoleMembers.class)));
 
-        List<TreeNode> nodes = privilegeService.tree();
+        given(this.rolePrivilegesRepository.findAllByRoleId(Mockito.anyLong())).willReturn(Collections.singletonList(Mockito.mock(RolePrivileges.class)));
+
+        given(this.privilegeRepository.findById(Mockito.anyLong())).willReturn(Optional.of(Mockito.mock(Privilege.class)));
+
+        List<TreeNode> nodes = privilegeService.tree("test");
         Assertions.assertNotNull(nodes);
     }
 

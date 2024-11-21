@@ -17,10 +17,11 @@
 
 package com.server.starter.service.impl;
 
-import com.server.starter.domain.Message;
-import com.server.starter.dto.MessageDTO;
-import com.server.starter.repository.MessageRepository;
-import com.server.starter.vo.MessageVO;
+import com.server.starter.system.domain.Message;
+import com.server.starter.system.dto.MessageDTO;
+import com.server.starter.system.repository.MessageRepository;
+import com.server.starter.system.service.impl.MessageServiceImpl;
+import com.server.starter.system.vo.MessageVO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
