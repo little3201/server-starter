@@ -65,7 +65,7 @@ public interface ServletBasicService<D, V> {
      * @param field the record's field.
      * @return true if the record exists, false otherwise.
      */
-    default boolean exist(String field, Long id) {
+    default boolean exists(String field, Long id) {
         return false;
     }
 

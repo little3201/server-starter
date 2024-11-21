@@ -173,10 +173,10 @@ class DictionaryControllerTest {
 
 
     @Test
-    void exist() throws Exception {
-        given(this.dictionaryService.exist(Mockito.anyLong(), Mockito.anyString(), Mockito.anyLong())).willReturn(true);
+    void exists() throws Exception {
+        given(this.dictionaryService.exists(Mockito.anyLong(), Mockito.anyString(), Mockito.anyLong())).willReturn(true);
 
-        mvc.perform(get("/dictionaries/{superiorId}/exist", "1")
+        mvc.perform(get("/dictionaries/{superiorId}/exists", "1")
                         .queryParam("name", "gender").queryParam("id", "1"))
                 .andExpect(status().isOk())
                 .andDo(print()).andReturn();
@@ -184,9 +184,9 @@ class DictionaryControllerTest {
 
     @Test
     void exist_error() throws Exception {
-        given(this.dictionaryService.exist(Mockito.anyLong(), Mockito.anyString(), Mockito.anyLong())).willThrow(new RuntimeException());
+        given(this.dictionaryService.exists(Mockito.anyLong(), Mockito.anyString(), Mockito.anyLong())).willThrow(new RuntimeException());
 
-        mvc.perform(get("/dictionaries/{superiorId}/exist", "1")
+        mvc.perform(get("/dictionaries/{superiorId}/exists", "1")
                         .queryParam("name", "gender").queryParam("id", "1"))
                 .andExpect(status().isNoContent())
                 .andDo(print()).andReturn();

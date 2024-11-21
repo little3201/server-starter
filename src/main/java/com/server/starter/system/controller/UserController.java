@@ -118,16 +118,16 @@ public class UserController {
      * @param username username
      * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
      */
-    @GetMapping("/exist")
-    public ResponseEntity<Boolean> exist(@RequestParam String username, Long id) {
-        boolean exist;
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> exists(@RequestParam String username, Long id) {
+        boolean exists;
         try {
-            exist = userService.exist(username, id);
+            exists = userService.exists(username, id);
         } catch (Exception e) {
-            logger.info("Query dictionary exist occurred an error: ", e);
+            logger.info("Query dictionary exists occurred an error: ", e);
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(exist);
+        return ResponseEntity.ok(exists);
     }
 
     /**
@@ -141,7 +141,7 @@ public class UserController {
     public ResponseEntity<UserVO> create(@RequestBody @Valid UserDTO dto) {
         UserVO vo;
         try {
-            boolean existed = userService.exist(dto.getUsername(), null);
+            boolean existed = userService.exists(dto.getUsername(), null);
             if (existed) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
@@ -166,7 +166,7 @@ public class UserController {
                                          @RequestBody @Valid UserDTO dto) {
         UserVO vo;
         try {
-            boolean existed = userService.exist(dto.getUsername(), id);
+            boolean existed = userService.exists(dto.getUsername(), id);
             if (existed) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }

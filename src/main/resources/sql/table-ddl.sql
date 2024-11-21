@@ -1,5 +1,5 @@
 /*
- *  Copyright 2018-2024 little3201.
+ *  Copyright 2024 little3201.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ DROP TABLE IF EXISTS groups;
 CREATE TABLE groups
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    group_name         varchar(50) NOT NULL,
+    group_name         varchar(64) NOT NULL,
     superior_id        bigint,
     description        varchar(255),
     enabled            boolean     NOT NULL DEFAULT true,
-    created_by         varchar(50),
+    created_by         varchar(64),
     created_date       timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(50),
+    last_modified_by   varchar(64),
     last_modified_date timestamp
 );
 
@@ -61,18 +61,18 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users
 (
     id                     bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    username               varchar(50) UNIQUE NOT NULL,
-    full_name              varchar(50),
+    username               varchar(64) UNIQUE NOT NULL,
+    full_name              varchar(64),
     password               varchar(100)       NOT NULL,
-    email                  varchar(50),
+    email                  varchar(64),
     avatar                 varchar(255),
     enabled                boolean            NOT NULL DEFAULT true,
     account_non_locked     boolean,
     account_expires_at     timestamp,
     credentials_expires_at timestamp,
-    created_by             varchar(50),
+    created_by             varchar(64),
     created_date           timestamp          NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by       varchar(50),
+    last_modified_by       varchar(64),
     last_modified_date     timestamp
 );
 
@@ -115,8 +115,8 @@ DROP TABLE IF EXISTS authorities;
 CREATE TABLE authorities
 (
     id        bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    username  varchar(50) not null,
-    authority varchar(50) not null,
+    username  varchar(64) not null,
+    authority varchar(64) not null,
     CONSTRAINT fk_authorities_users FOREIGN KEY (username) references users (username)
 );
 
@@ -140,12 +140,12 @@ DROP TABLE IF EXISTS roles;
 CREATE TABLE roles
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name               varchar(50) NOT NULL,
+    name               varchar(64) NOT NULL,
     description        varchar(255),
     enabled            boolean     NOT NULL DEFAULT true,
-    created_by         varchar(50),
+    created_by         varchar(64),
     created_date       timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(50),
+    last_modified_by   varchar(64),
     last_modified_date timestamp
 );
 
@@ -177,7 +177,7 @@ CREATE TABLE group_members
 (
     id       bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     group_id bigint      NOT NULL,
-    username varchar(50) NOT NULL,
+    username varchar(64) NOT NULL,
     CONSTRAINT fk_group_members_groups foreign key (group_id) references groups (id),
     CONSTRAINT fk_group_members_users FOREIGN KEY (username) references users (username)
 );
@@ -200,7 +200,7 @@ CREATE TABLE group_authorities
 (
     id        bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     group_id  bigint      NOT NULL,
-    authority varchar(50) NOT NULL,
+    authority varchar(64) NOT NULL,
     CONSTRAINT fk_group_authorities_groups FOREIGN KEY (group_id) references groups (id)
 );
 
@@ -220,8 +220,8 @@ DROP TABLE IF EXISTS persistent_logins;
 -- Table structure persistent_logins
 CREATE TABLE persistent_logins
 (
+    username  varchar(64) not null,
     series    varchar(64) primary key,
-    username  varchar(50) not null,
     token     varchar(64) not null,
     last_used timestamp   not null
 );
@@ -246,7 +246,7 @@ CREATE TABLE role_members
 (
     id       bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     role_id  bigint      NOT NULL,
-    username varchar(50) NOT NULL,
+    username varchar(64) NOT NULL,
     CONSTRAINT fk_role_members_roles FOREIGN KEY (role_id) REFERENCES roles (id),
     CONSTRAINT fk_role_members_users FOREIGN KEY (username) REFERENCES users (username)
 );
@@ -269,7 +269,7 @@ CREATE TABLE privileges
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     superior_id        bigint,
-    name               varchar(50) NOT NULL,
+    name               varchar(64) NOT NULL,
     path               varchar(127),
     redirect           varchar(255),
     component          varchar(255),
@@ -277,9 +277,9 @@ CREATE TABLE privileges
     actions            varchar[],
     description        varchar(255),
     enabled            boolean     NOT NULL DEFAULT true,
-    created_by         varchar(50),
+    created_by         varchar(64),
     created_date       timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(50),
+    last_modified_by   varchar(64),
     last_modified_date timestamp
 );
 
@@ -345,13 +345,13 @@ DROP TABLE IF EXISTS dictionaries;
 CREATE TABLE dictionaries
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name               varchar(50) NOT NULL,
+    name               varchar(64) NOT NULL,
     superior_id        bigint,
     description        varchar(255),
     enabled            boolean     NOT NULL DEFAULT true,
-    created_by         varchar(50),
+    created_by         varchar(64),
     created_date       timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(50),
+    last_modified_by   varchar(64),
     last_modified_date timestamp
 );
 
@@ -384,15 +384,15 @@ DROP TABLE IF EXISTS messages;
 CREATE TABLE messages
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    title              varchar(255) NOT NULL,
-    content            varchar(1000),
-    is_read            boolean      NOT NULL DEFAULT false,
-    receiver           varchar(50)  NOT NULL,
+    title              varchar(64) NOT NULL,
+    content            text,
+    is_read            boolean     NOT NULL DEFAULT false,
+    receiver           varchar(64) NOT NULL,
     description        varchar(255),
-    enabled            boolean      NOT NULL DEFAULT true,
-    created_by         varchar(50),
-    created_date       timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(50)  NOT NULL,
+    enabled            boolean     NOT NULL DEFAULT true,
+    created_by         varchar(64),
+    created_date       timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_modified_by   varchar(64) NOT NULL,
     last_modified_date timestamp
 );
 
@@ -430,19 +430,19 @@ DROP TABLE IF EXISTS access_logs;
 CREATE TABLE access_logs
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    url                varchar(255),
+    url                varchar(127),
     http_method        varchar(10),
     params             varchar(255),
     body               json,
     ip                 inet,
-    location           varchar(50),
+    location           varchar(64),
     status_code        integer,
     response_times     bigint,
     response_message   varchar(255),
     enabled            boolean   NOT NULL DEFAULT true,
-    created_by         varchar(50),
+    created_by         varchar(64),
     created_date       timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(50),
+    last_modified_by   varchar(64),
     last_modified_date timestamp
 );
 
@@ -488,23 +488,23 @@ DROP TABLE IF EXISTS operation_logs;
 CREATE TABLE operation_logs
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    operation          varchar(255),
-    os                 varchar(50),
-    browser            varchar(50),
+    operation          varchar(64),
+    os                 varchar(64),
+    browser            varchar(64),
     ip                 inet,
-    location           varchar(50),
-    content            varchar(1000),
+    location           varchar(64),
+    content            text,
     user_agent         varchar(255),
     status_code        integer,
     operated_time      timestamp,
     response_message   varchar(255),
     referer            varchar(255),
-    session_id         varchar(50),
+    session_id         varchar(64),
     device_type        varchar(20),
     enabled            boolean   NOT NULL DEFAULT true,
-    created_by         varchar(50),
+    created_by         varchar(64),
     created_date       timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(50),
+    last_modified_by   varchar(64),
     last_modified_date timestamp
 );
 
@@ -558,9 +558,9 @@ DROP TABLE IF EXISTS fields;
 CREATE TABLE fields
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name               varchar(127),
-    column_name        varchar(127),
-    data_type          varchar(127),
+    name               varchar(64),
+    column_name        varchar(64),
+    data_type          varchar(64),
     length             int2,
     field_type         varchar(16),
     form_type          varchar(16),
@@ -572,9 +572,9 @@ CREATE TABLE fields
     editable           bool,
     comment            text,
     enabled            bool         NOT NULL DEFAULT true,
-    created_by         varchar(50),
+    created_by         varchar(64),
     created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(50),
+    last_modified_by   varchar(64),
     last_modified_date timestamp(6),
     CONSTRAINT fk_fields_schemas FOREIGN KEY (schema_id) references schemas (id)
 );
@@ -626,14 +626,14 @@ DROP TABLE IF EXISTS scripts;
 CREATE TABLE scripts
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name               varchar(255),
+    name               varchar(64),
     icon               varchar(255),
-    version            varchar(255),
+    version            varchar(16),
     description        text,
     enabled            bool         NOT NULL DEFAULT true,
-    created_by         varchar(50),
+    created_by         varchar(64),
     created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(50),
+    last_modified_by   varchar(64),
     last_modified_date timestamp(6)
 );
 COMMENT
@@ -666,14 +666,14 @@ DROP TABLE IF EXISTS schemas;
 CREATE TABLE schemas
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name               varchar(255),
-    reference          varchar(255),
-    domain             varchar(50),
+    name               varchar(64),
+    reference          varchar(127),
+    domain             varchar(64),
     templates          varchar[],
     enabled            bool         NOT NULL DEFAULT true,
-    created_by         varchar(50),
+    created_by         varchar(64),
     created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(50),
+    last_modified_by   varchar(64),
     last_modified_date timestamp(6)
 );
 COMMENT
@@ -707,15 +707,15 @@ DROP TABLE IF EXISTS file_records;
 CREATE TABLE file_records
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name               varchar(50)  NOT NULL,
+    name               varchar(64)  NOT NULL,
     type               varchar(255),
     path               varchar(255),
     size               float4,
     description        varchar(255),
     enabled            bool         NOT NULL DEFAULT true,
-    created_by         varchar(50),
+    created_by         varchar(64),
     created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(50),
+    last_modified_by   varchar(64),
     last_modified_date timestamp(6)
 );
 COMMENT
@@ -751,23 +751,30 @@ DROP TABLE IF EXISTS templates;
 CREATE TABLE templates
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name               varchar(255),
+    name               varchar(64) NOT NULL,
+    suffix             varchar(16) NOT NULL,
     content            text,
     type               bigint,
+    version            varchar(16) NOT NULL,
     enabled            bool         NOT NULL DEFAULT true,
-    created_by         varchar(50),
+    created_by         varchar(64),
     created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(50),
-    last_modified_date timestamp(6)
+    last_modified_by   varchar(64),
+    last_modified_date timestamp(6),
+    CONSTRAINT templates_name_suffix_version_key UNIQUE (name, suffix, version)
 );
 COMMENT
 ON COLUMN templates.id IS '主键，自动生成';
 COMMENT
-ON COLUMN templates.name IS '表名称';
+ON COLUMN templates.name IS '名称';
+COMMENT
+ON COLUMN templates.suffix IS '后缀';
 COMMENT
 ON COLUMN templates.content IS '模板内容';
 COMMENT
 ON COLUMN templates.type IS '类型';
+COMMENT
+ON COLUMN templates.version IS '版本号';
 COMMENT
 ON COLUMN templates.enabled IS '是否启用';
 COMMENT

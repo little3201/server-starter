@@ -108,21 +108,21 @@ class UserServiceImplTest {
     }
 
     @Test
-    void exist() {
+    void exists() {
         given(this.userRepository.existsByUsernameAndIdNot(Mockito.anyString(), Mockito.anyLong())).willReturn(Boolean.TRUE);
 
-        boolean exist = userService.exist("test", 1L);
+        boolean exists = userService.exists("test", 1L);
 
-        Assertions.assertTrue(exist);
+        Assertions.assertTrue(exists);
     }
 
     @Test
     void exist_false() {
         given(this.userRepository.existsByUsernameAndIdNot(Mockito.anyString(), Mockito.anyLong())).willReturn(false);
 
-        boolean exist = userService.exist("test", 1L);
+        boolean exists = userService.exists("test", 1L);
 
-        Assertions.assertFalse(exist);
+        Assertions.assertFalse(exists);
     }
 
     @Test

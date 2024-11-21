@@ -117,16 +117,16 @@ public class DictionaryController {
      * @param name 名称
      * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
      */
-    @GetMapping("/{superiorId}/exist")
-    public ResponseEntity<Boolean> exist(@PathVariable Long superiorId, @RequestParam String name, Long id) {
-        boolean exist;
+    @GetMapping("/{superiorId}/exists")
+    public ResponseEntity<Boolean> exists(@PathVariable Long superiorId, @RequestParam String name, Long id) {
+        boolean exists;
         try {
-            exist = dictionaryService.exist(superiorId, name, id);
+            exists = dictionaryService.exists(superiorId, name, id);
         } catch (Exception e) {
-            logger.info("Query dictionary exist occurred an error: ", e);
+            logger.info("Query dictionary exists occurred an error: ", e);
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(exist);
+        return ResponseEntity.ok(exists);
     }
 
     /**
@@ -140,7 +140,7 @@ public class DictionaryController {
     public ResponseEntity<DictionaryVO> create(@RequestBody @Valid DictionaryDTO dto) {
         DictionaryVO vo;
         try {
-            boolean existed = dictionaryService.exist(dto.getSuperiorId(), dto.getName(), null);
+            boolean existed = dictionaryService.exists(dto.getSuperiorId(), dto.getName(), null);
             if (existed) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
@@ -164,7 +164,7 @@ public class DictionaryController {
     public ResponseEntity<DictionaryVO> modify(@PathVariable Long id, @RequestBody @Valid DictionaryDTO dto) {
         DictionaryVO vo;
         try {
-            boolean existed = dictionaryService.exist(dto.getSuperiorId(), dto.getName(), id);
+            boolean existed = dictionaryService.exists(dto.getSuperiorId(), dto.getName(), id);
             if (existed) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }

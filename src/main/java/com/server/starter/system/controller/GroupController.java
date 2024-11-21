@@ -125,16 +125,16 @@ public class GroupController {
      * @param name 名称
      * @return 如果查询到数据，返回查询到的信息，否则返回204状态码
      */
-    @GetMapping("/exist")
-    public ResponseEntity<Boolean> exist(@RequestParam String name, Long id) {
-        boolean exist;
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> exists(@RequestParam String name, Long id) {
+        boolean exists;
         try {
-            exist = groupService.exist(name, id);
+            exists = groupService.exists(name, id);
         } catch (Exception e) {
-            logger.info("Query dictionary exist occurred an error: ", e);
+            logger.info("Query dictionary exists occurred an error: ", e);
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(exist);
+        return ResponseEntity.ok(exists);
     }
 
     /**
@@ -148,7 +148,7 @@ public class GroupController {
     public ResponseEntity<GroupVO> create(@RequestBody @Valid GroupDTO dto) {
         GroupVO groupVO;
         try {
-            boolean existed = groupService.exist(dto.getName(), null);
+            boolean existed = groupService.exists(dto.getName(), null);
             if (existed) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
@@ -172,7 +172,7 @@ public class GroupController {
     public ResponseEntity<GroupVO> modify(@PathVariable Long id, @RequestBody GroupDTO dto) {
         GroupVO groupVO;
         try {
-            boolean existed = groupService.exist(dto.getName(), id);
+            boolean existed = groupService.exists(dto.getName(), id);
             if (existed) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }

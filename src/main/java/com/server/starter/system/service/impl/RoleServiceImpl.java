@@ -72,7 +72,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public boolean exist(String name, Long id) {
+    public boolean exists(String name, Long id) {
         Assert.hasText(name, "name must not be blank.");
         if (id == null) {
             return roleRepository.existsByName(name);
