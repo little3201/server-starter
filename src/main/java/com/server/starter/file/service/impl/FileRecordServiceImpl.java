@@ -1,17 +1,29 @@
+/*
+ * Copyright (c) 2024.  little3201.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *       https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package com.server.starter.file.service.impl;
 
 
-import com.server.starter.convert.Converter;
 import com.server.starter.file.domain.FileRecord;
 import com.server.starter.file.repository.FileRecordRepository;
 import com.server.starter.file.service.FileRecordService;
 import com.server.starter.file.vo.FileRecordVO;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -30,9 +42,7 @@ public class FileRecordServiceImpl implements FileRecordService {
 
     @Override
     public Page<FileRecordVO> retrieve(int page, int size, String sortBy, boolean descending, String name) {
-        Sort sort = Sort.by(descending ? Sort.Direction.DESC : Sort.Direction.ASC,
-                StringUtils.hasText(sortBy) ? sortBy : "id");
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = pageable(page, size, sortBy, descending);
 
         return fileRecordRepository.findAll(pageable).map(this::convert);
     }
@@ -50,6 +60,6 @@ public class FileRecordServiceImpl implements FileRecordService {
      * @return FileVO 输出对象
      */
     private FileRecordVO convert(FileRecord fileRecord) {
-        return Converter.convert(fileRecord, FileRecordVO.class);
+        return convert(fileRecord, FileRecordVO.class);
     }
 }

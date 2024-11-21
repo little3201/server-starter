@@ -1,23 +1,21 @@
 /*
- *  Copyright 2018-2024 little3201.
+ * Copyright (c) 2024.  little3201.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *       https://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
 package com.server.starter.system.service.impl;
 
-import com.server.starter.convert.Converter;
 import com.server.starter.service.ServletAbstractTreeNodeService;
 import com.server.starter.system.domain.Dictionary;
 import com.server.starter.system.dto.DictionaryDTO;
@@ -25,12 +23,9 @@ import com.server.starter.system.repository.DictionaryRepository;
 import com.server.starter.system.service.DictionaryService;
 import com.server.starter.system.vo.DictionaryVO;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -58,11 +53,10 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
      */
     @Override
     public Page<DictionaryVO> retrieve(int page, int size, String sortBy, boolean descending, String name) {
-        Sort sort = Sort.by(descending ? Sort.Direction.DESC : Sort.Direction.ASC,
-                StringUtils.hasText(sortBy) ? sortBy : "id");
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = pageable(page, size, sortBy, descending);
 
-        return dictionaryRepository.findAllBySuperiorIdIsNull(pageable).map(this::convert);
+        return dictionaryRepository.findAllBySuperiorIdIsNull(pageable)
+                .map(dictionary -> convert(dictionary, DictionaryVO.class));
     }
 
     /**
@@ -72,11 +66,12 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
     public DictionaryVO fetch(Long id) {
         Assert.notNull(id, "id must not be null.");
 
-        return dictionaryRepository.findById(id).map(this::convert).orElse(null);
+        return dictionaryRepository.findById(id)
+                .map(dictionary -> convert(dictionary, DictionaryVO.class)).orElse(null);
     }
 
     @Override
-    public boolean toggleStatus(Long id) {
+    public boolean enable(Long id) {
         return dictionaryRepository.updateEnabledById(id);
     }
 
@@ -87,7 +82,7 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
     public List<DictionaryVO> subset(Long id) {
         Assert.notNull(id, "id must not be null.");
         return dictionaryRepository.findAllBySuperiorId(id)
-                .stream().map(this::convert).toList();
+                .stream().map(dictionary -> convert(dictionary, DictionaryVO.class)).toList();
     }
 
     /**
@@ -107,10 +102,10 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
      */
     @Override
     public DictionaryVO create(DictionaryDTO dto) {
-        Dictionary dictionary = Converter.convert(dto, Dictionary.class);
+        Dictionary dictionary = convert(dto, Dictionary.class);
 
         dictionaryRepository.save(dictionary);
-        return this.convert(dictionary);
+        return convert(dictionary, DictionaryVO.class);
     }
 
     /**
@@ -120,9 +115,9 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
     public DictionaryVO modify(Long id, DictionaryDTO dto) {
         Assert.notNull(id, "id must not be null.");
         return dictionaryRepository.findById(id).map(existing -> {
-                    Dictionary dictionary = Converter.convert(dto, existing);
+                    Dictionary dictionary = convert(dto, existing);
                     dictionary = dictionaryRepository.save(dictionary);
-                    return this.convert(dictionary);
+                    return convert(dictionary, DictionaryVO.class);
                 })
                 .orElseThrow();
     }
@@ -136,13 +131,4 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
         dictionaryRepository.deleteById(id);
     }
 
-    /**
-     * 类型转换
-     *
-     * @param dictionary 信息
-     * @return VO 输出对象
-     */
-    private DictionaryVO convert(Dictionary dictionary) {
-        return Converter.convert(dictionary, DictionaryVO.class);
-    }
 }

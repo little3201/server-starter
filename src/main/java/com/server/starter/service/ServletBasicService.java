@@ -1,23 +1,21 @@
 /*
- *  Copyright 2018-2024 little3201.
+ * Copyright (c) 2024.  little3201.
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *       https://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
 package com.server.starter.service;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,7 +26,7 @@ import java.util.List;
  * @param <V> VO type for output data.
  * @since 0.1.2
  */
-public interface ServletBasicService<D, V> {
+public interface ServletBasicService<D, V> extends BasicService {
 
     /**
      * Retrieves all records.
@@ -55,7 +53,7 @@ public interface ServletBasicService<D, V> {
      * @param id the record ID.
      * @return true if the record enabled/disabled, false otherwise.
      */
-    default boolean toggleStatus(Long id) {
+    default boolean enable(Long id) {
         return false;
     }
 
@@ -79,13 +77,14 @@ public interface ServletBasicService<D, V> {
         return null;
     }
 
+
     /**
-     * Creates all given new record.
+     * Creates all given records.
      *
-     * @param dCollection the DTO representing the new records.
-     * @return the created record.
+     * @param iterable the new records.
+     * @return the created records.
      */
-    default List<V> createAll(Collection<D> dCollection) {
+    default List<V> createAll(Iterable<D> iterable) {
         return Collections.emptyList();
     }
 
