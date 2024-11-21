@@ -68,8 +68,7 @@ public interface BasicService {
     default <S, T extends AuditMetadata> T convertToDomain(S source, Class<T> targetClass) {
         try {
             T target = targetClass.getDeclaredConstructor().newInstance();
-            BeanCopier copier = BeanCopier.create(source.getClass(), targetClass, false);
-            copier.copy(source, target, null);
+            convert(source, target);
             return target;
         } catch (Exception e) {
             throw new RuntimeException("Convert error", e);
@@ -90,8 +89,7 @@ public interface BasicService {
         try {
             T target = create(source.getId(), source.isEnabled(),
                     source.getLastModifiedDate().orElse(null), voClass);
-            BeanCopier copier = BeanCopier.create(source.getClass(), voClass, false);
-            copier.copy(source, target, null);
+            convert(source, target);
             return target;
         } catch (Exception e) {
             throw new RuntimeException("Convert error", e);
