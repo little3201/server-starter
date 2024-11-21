@@ -57,10 +57,10 @@ public class GroupServiceImpl extends ServletAbstractTreeNodeService<Group> impl
 
         if (superiorId == null) {
             return groupRepository.findAllBySuperiorIdIsNull(pageable)
-                    .map(group -> convert(group, GroupVO.class));
+                    .map(group -> convertToVO(group, GroupVO.class));
         }
         return groupRepository.findAllBySuperiorId(superiorId, pageable)
-                .map(group -> convert(group, GroupVO.class));
+                .map(group -> convertToVO(group, GroupVO.class));
     }
 
     /**
@@ -80,7 +80,7 @@ public class GroupServiceImpl extends ServletAbstractTreeNodeService<Group> impl
         Assert.notNull(id, "id must not be null.");
 
         return groupRepository.findById(id)
-                .map(group -> convert(group, GroupVO.class)).orElse(null);
+                .map(group -> convertToVO(group, GroupVO.class)).orElse(null);
     }
 
     @Override
@@ -101,10 +101,10 @@ public class GroupServiceImpl extends ServletAbstractTreeNodeService<Group> impl
      */
     @Override
     public GroupVO create(GroupDTO dto) {
-        Group group = convert(dto, Group.class);
+        Group group = convertToDomain(dto, Group.class);
 
         groupRepository.save(group);
-        return convert(group, GroupVO.class);
+        return convertToVO(group, GroupVO.class);
     }
 
     /**
@@ -116,7 +116,7 @@ public class GroupServiceImpl extends ServletAbstractTreeNodeService<Group> impl
         return groupRepository.findById(id).map(existing -> {
                     Group group = convert(dto, existing);
                     group = groupRepository.save(group);
-                    return convert(group, GroupVO.class);
+                    return convertToVO(group, GroupVO.class);
                 })
                 .orElseThrow();
     }

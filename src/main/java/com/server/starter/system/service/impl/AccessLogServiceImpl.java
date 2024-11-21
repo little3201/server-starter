@@ -69,7 +69,7 @@ public class AccessLogServiceImpl implements AccessLogService {
      */
     @Override
     public AccessLogVO create(AccessLogDTO dto) {
-        AccessLog accessLog = convert(dto, AccessLog.class);
+        AccessLog accessLog = convertToDomain(dto, AccessLog.class);
 
         accessLogRepository.save(accessLog);
         return this.convert(accessLog);
@@ -82,7 +82,7 @@ public class AccessLogServiceImpl implements AccessLogService {
     }
 
     private AccessLogVO convert(AccessLog accessLog) {
-        AccessLogVO vo = convert(accessLog, AccessLogVO.class);
+        AccessLogVO vo = convertToVO(accessLog, AccessLogVO.class);
         vo.setIp(Objects.nonNull(accessLog.getIp()) ? accessLog.getIp().toString() : null);
         vo.setBody(Objects.nonNull(accessLog.getBody()) ? accessLog.getBody().toString() : null);
         return vo;

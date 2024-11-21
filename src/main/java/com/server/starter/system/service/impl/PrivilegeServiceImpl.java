@@ -71,7 +71,13 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
                 StringUtils.hasText(sortBy) ? sortBy : "id");
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        return privilegeRepository.findAllBySuperiorIdIsNull(pageable).map(this::convert);
+        return privilegeRepository.findAllBySuperiorIdIsNull(pageable)
+                .map(privilege -> {
+                    PrivilegeVO vo = convertToVO(privilege, PrivilegeVO.class);
+                    long count = privilegeRepository.countBySuperiorId(privilege.getId());
+                    vo.setCount(count);
+                    return vo;
+                });
     }
 
     /**
@@ -102,7 +108,13 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
      */
     @Override
     public List<PrivilegeVO> subset(Long superiorId) {
-        return privilegeRepository.findAllBySuperiorId(superiorId).stream().map(this::convert).toList();
+        return privilegeRepository.findAllBySuperiorId(superiorId).stream()
+                .map(privilege -> {
+                    PrivilegeVO vo = convertToVO(privilege, PrivilegeVO.class);
+                    long count = privilegeRepository.countBySuperiorId(privilege.getId());
+                    vo.setCount(count);
+                    return vo;
+                }).toList();
     }
 
     /**
@@ -112,7 +124,9 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
     public PrivilegeVO fetch(Long id) {
         Assert.notNull(id, "id must not be null.");
 
-        return privilegeRepository.findById(id).map(this::convert).orElse(null);
+        return privilegeRepository.findById(id)
+                .map(privilege -> convertToVO(privilege, PrivilegeVO.class))
+                .orElse(null);
     }
 
     @Override
@@ -129,7 +143,7 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
         return privilegeRepository.findById(id).map(existing -> {
                     Privilege privilege = convert(dto, existing);
                     privilege = privilegeRepository.save(privilege);
-                    return this.convert(privilege);
+                    return convertToVO(privilege, PrivilegeVO.class);
                 })
                 .orElseThrow();
     }
@@ -142,19 +156,6 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
         Assert.notNull(id, "id must not be null.");
 
         privilegeRepository.deleteById(id);
-    }
-
-    /**
-     * 转换对象
-     *
-     * @param privilege 基础对象
-     * @return 结果对象
-     */
-    private PrivilegeVO convert(Privilege privilege) {
-        PrivilegeVO vo = convert(privilege, PrivilegeVO.class);
-        long count = privilegeRepository.countBySuperiorId(privilege.getId());
-        vo.setCount(count);
-        return vo;
     }
 
     /**

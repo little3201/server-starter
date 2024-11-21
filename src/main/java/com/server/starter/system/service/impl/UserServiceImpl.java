@@ -58,9 +58,9 @@ public class UserServiceImpl implements UserService {
 
         if (StringUtils.hasText(name)) {
             return userRepository.findAllByUsernameContaining(name, pageable)
-                    .map(user -> convert(user, UserVO.class));
+                    .map(user -> convertToVO(user, UserVO.class));
         }
-        return userRepository.findAll(pageable).map(user -> convert(user, UserVO.class));
+        return userRepository.findAll(pageable).map(user -> convertToVO(user, UserVO.class));
     }
 
     @Override
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
         Assert.hasText(username, "username must not be blank.");
 
         return userRepository.findByUsername(username)
-                .map(user -> convert(user, UserVO.class)).orElse(null);
+                .map(user -> convertToVO(user, UserVO.class)).orElse(null);
     }
 
     /**
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
         Assert.notNull(id, "id must not be null.");
 
         return userRepository.findById(id)
-                .map(user -> convert(user, UserVO.class)).orElse(null);
+                .map(user -> convertToVO(user, UserVO.class)).orElse(null);
     }
 
     @Override
@@ -104,11 +104,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserVO create(UserDTO dto) {
-        User user = convert(dto, User.class);
+        User user = convertToDomain(dto, User.class);
         user.setPassword("{noop}123456");
 
         userRepository.save(user);
-        return convert(user, UserVO.class);
+        return convertToVO(user, UserVO.class);
     }
 
     /**
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
                 .map(existing -> {
                     User user = convert(dto, existing);
                     user = userRepository.save(user);
-                    return convert(user, UserVO.class);
+                    return convertToVO(user, UserVO.class);
                 }).orElseThrow();
     }
 

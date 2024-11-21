@@ -58,7 +58,7 @@ public class MessageServiceImpl implements MessageService {
         Pageable pageable = PageRequest.of(page, size, sort);
 
         return messageRepository.findAll(pageable)
-                .map(message -> convert(message, MessageVO.class));
+                .map(message -> convertToVO(message, MessageVO.class));
     }
 
     /**
@@ -69,7 +69,7 @@ public class MessageServiceImpl implements MessageService {
         Assert.notNull(id, "id must not be null.");
 
         return messageRepository.findById(id)
-                .map(message -> convert(message, MessageVO.class)).orElse(null);
+                .map(message -> convertToVO(message, MessageVO.class)).orElse(null);
     }
 
     /**
@@ -77,10 +77,10 @@ public class MessageServiceImpl implements MessageService {
      */
     @Override
     public MessageVO create(MessageDTO dto) {
-        Message message = convert(dto, Message.class);
+        Message message = convertToDomain(dto, Message.class);
 
         messageRepository.save(message);
-        return convert(message, MessageVO.class);
+        return convertToVO(message, MessageVO.class);
     }
 
 }

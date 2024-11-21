@@ -17,7 +17,6 @@
 package com.server.starter.file.service.impl;
 
 
-import com.server.starter.file.domain.FileRecord;
 import com.server.starter.file.repository.FileRecordRepository;
 import com.server.starter.file.service.FileRecordService;
 import com.server.starter.file.vo.FileRecordVO;
@@ -44,7 +43,8 @@ public class FileRecordServiceImpl implements FileRecordService {
     public Page<FileRecordVO> retrieve(int page, int size, String sortBy, boolean descending, String name) {
         Pageable pageable = pageable(page, size, sortBy, descending);
 
-        return fileRecordRepository.findAll(pageable).map(this::convert);
+        return fileRecordRepository.findAll(pageable)
+                .map(fileRecord -> convertToVO(fileRecord, FileRecordVO.class));
     }
 
     @Override
@@ -52,14 +52,4 @@ public class FileRecordServiceImpl implements FileRecordService {
         return null;
     }
 
-
-    /**
-     * 数据转换
-     *
-     * @param fileRecord 数据
-     * @return FileVO 输出对象
-     */
-    private FileRecordVO convert(FileRecord fileRecord) {
-        return convert(fileRecord, FileRecordVO.class);
-    }
 }

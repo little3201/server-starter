@@ -16,6 +16,7 @@
 
 package com.server.starter.file.vo;
 
+import com.server.starter.audit.ReadonlyMetadata;
 import com.server.starter.file.bo.FileRecordBO;
 
 import java.time.Instant;
@@ -25,26 +26,32 @@ import java.time.Instant;
  *
  * @author wq li
  */
-public class FileRecordVO extends FileRecordBO {
+public class FileRecordVO extends FileRecordBO implements ReadonlyMetadata {
 
-    private Long id;
+    private final Long id;
 
-    private Instant lastModifiedDate;
+    private final boolean enabled;
 
+    private final Instant lastModifiedDate;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    public FileRecordVO(Long id, boolean enabled, Instant lastModifiedDate) {
         this.id = id;
-    }
-
-    public Instant getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Instant lastModifiedDate) {
+        this.enabled = enabled;
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    @Override
+    public Long getId() {
+        return this.id;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    @Override
+    public Instant getLastModifiedDate() {
+        return this.lastModifiedDate;
     }
 }

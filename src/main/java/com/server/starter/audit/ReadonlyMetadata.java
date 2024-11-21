@@ -14,4 +14,30 @@
  *
  */
 
-package com.server.starter.system;
+package com.server.starter.audit;
+
+import java.time.Instant;
+
+public interface ReadonlyMetadata {
+
+    /**
+     * Get the unique identifier.
+     *
+     * @return the template ID
+     */
+    Long getId();
+
+    /**
+     * Checks if the template is enabled.
+     *
+     * @return true if the template is enabled, false otherwise
+     */
+    boolean isEnabled();
+
+    /**
+     * Gets the timestamp of the last modification.
+     *
+     * @return the last modified date
+     */
+    Instant getLastModifiedDate();
+}

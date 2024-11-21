@@ -57,7 +57,7 @@ public class RoleServiceImpl implements RoleService {
         Pageable pageable = PageRequest.of(page, size, sort);
 
         return roleRepository.findAll(pageable)
-                .map(role -> convert(role, RoleVO.class));
+                .map(role -> convertToVO(role, RoleVO.class));
     }
 
     /**
@@ -68,7 +68,7 @@ public class RoleServiceImpl implements RoleService {
         Assert.notNull(id, "id must not be null.");
 
         return roleRepository.findById(id)
-                .map(role -> convert(role, RoleVO.class)).orElse(null);
+                .map(role -> convertToVO(role, RoleVO.class)).orElse(null);
     }
 
     @Override
@@ -92,10 +92,10 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public RoleVO create(RoleDTO dto) {
-        Role role = convert(dto, Role.class);
+        Role role = convertToDomain(dto, Role.class);
 
         roleRepository.save(role);
-        return convert(role, RoleVO.class);
+        return convertToVO(role, RoleVO.class);
     }
 
     /**
@@ -107,7 +107,7 @@ public class RoleServiceImpl implements RoleService {
         return roleRepository.findById(id).map(existing -> {
                     Role role = convert(dto, existing);
                     role = roleRepository.save(role);
-                    return convert(role, RoleVO.class);
+                    return convertToVO(role, RoleVO.class);
                 })
                 .orElseThrow();
     }

@@ -56,7 +56,7 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
         Pageable pageable = pageable(page, size, sortBy, descending);
 
         return dictionaryRepository.findAllBySuperiorIdIsNull(pageable)
-                .map(dictionary -> convert(dictionary, DictionaryVO.class));
+                .map(dictionary -> convertToVO(dictionary, DictionaryVO.class));
     }
 
     /**
@@ -67,7 +67,7 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
         Assert.notNull(id, "id must not be null.");
 
         return dictionaryRepository.findById(id)
-                .map(dictionary -> convert(dictionary, DictionaryVO.class)).orElse(null);
+                .map(dictionary -> convertToVO(dictionary, DictionaryVO.class)).orElse(null);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
     public List<DictionaryVO> subset(Long id) {
         Assert.notNull(id, "id must not be null.");
         return dictionaryRepository.findAllBySuperiorId(id)
-                .stream().map(dictionary -> convert(dictionary, DictionaryVO.class)).toList();
+                .stream().map(dictionary -> convertToVO(dictionary, DictionaryVO.class)).toList();
     }
 
     /**
@@ -102,10 +102,10 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
      */
     @Override
     public DictionaryVO create(DictionaryDTO dto) {
-        Dictionary dictionary = convert(dto, Dictionary.class);
+        Dictionary dictionary = convertToDomain(dto, Dictionary.class);
 
         dictionaryRepository.save(dictionary);
-        return convert(dictionary, DictionaryVO.class);
+        return convertToVO(dictionary, DictionaryVO.class);
     }
 
     /**
@@ -117,7 +117,7 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
         return dictionaryRepository.findById(id).map(existing -> {
                     Dictionary dictionary = convert(dto, existing);
                     dictionary = dictionaryRepository.save(dictionary);
-                    return convert(dictionary, DictionaryVO.class);
+                    return convertToVO(dictionary, DictionaryVO.class);
                 })
                 .orElseThrow();
     }

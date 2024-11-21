@@ -15,54 +15,44 @@
  */
 package com.server.starter.system.vo;
 
+import com.server.starter.audit.ReadonlyMetadata;
 import com.server.starter.system.bo.GroupBO;
+
+import java.time.Instant;
 
 /**
  * vo class for group.
  *
  * @author wq li
  */
-public class GroupVO extends GroupBO {
+public class GroupVO extends GroupBO  implements ReadonlyMetadata {
 
-    private Long id;
+    private final Long id;
 
-    private boolean enabled;
+    private final boolean enabled;
 
+    private final Instant lastModifiedDate;
 
-    /**
-     * <p>Getter for the field <code>id</code>.</p>
-     *
-     * @return a {@link java.lang.Long} object
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * <p>Setter for the field <code>id</code>.</p>
-     *
-     * @param id a {@link java.lang.Long} object
-     */
-    public void setId(Long id) {
+    public GroupVO(Long id, boolean enabled, Instant lastModifiedDate) {
         this.id = id;
-    }
-
-    /**
-     * <p>isEnabled.</p>
-     *
-     * @return a boolean
-     */
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    /**
-     * <p>Setter for the field <code>enabled</code>.</p>
-     *
-     * @param enabled a boolean
-     */
-    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+
+    @Override
+    public Long getId() {
+        return this.id;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.enabled;
+    }
+
+    @Override
+    public Instant getLastModifiedDate() {
+        return this.lastModifiedDate;
     }
 
 }

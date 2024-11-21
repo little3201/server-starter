@@ -74,7 +74,7 @@ public class OperationLogServiceImpl implements OperationLogService {
      */
     @Override
     public OperationLogVO create(OperationLogDTO dto) {
-        OperationLog operationLog = convert(dto, OperationLog.class);
+        OperationLog operationLog = convertToDomain(dto, OperationLog.class);
 
         operationLogRepository.save(operationLog);
         return this.convert(operationLog);
@@ -87,7 +87,7 @@ public class OperationLogServiceImpl implements OperationLogService {
     }
 
     private OperationLogVO convert(OperationLog operationLog) {
-        OperationLogVO vo = convert(operationLog, OperationLogVO.class);
+        OperationLogVO vo = convertToVO(operationLog, OperationLogVO.class);
         vo.setIp(Objects.nonNull(operationLog.getIp()) ? operationLog.getIp().toString() : null);
         return vo;
     }

@@ -14,4 +14,24 @@
  *
  */
 
-package com.server.starter.file;
+package com.server.starter.file.service.impl;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class FileRecordServiceImplTest {
+
+    @BeforeEach
+    void setUp() {
+    }
+
+    @Test
+    void retrieve() {
+    }
+
+    @Test
+    void upload() {
+    }
+}
