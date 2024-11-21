@@ -16,7 +16,6 @@
 
 package com.server.starter.system.controller;
 
-import com.server.starter.system.controller.AccessLogController;
 import com.server.starter.system.service.AccessLogService;
 import com.server.starter.system.vo.AccessLogVO;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +32,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Instant;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -63,7 +63,7 @@ class AccessLogControllerTest {
     @BeforeEach
     void setUp() {
         // vo
-        accessLogVO = new AccessLogVO();
+        accessLogVO = new AccessLogVO(1L, true, Instant.now());
         accessLogVO.setIp("12.1.3.2");
         accessLogVO.setLocation("test");
         accessLogVO.setHttpMethod("POST");

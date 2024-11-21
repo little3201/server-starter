@@ -18,7 +18,6 @@ package com.server.starter.system.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.starter.domain.TreeNode;
-import com.server.starter.system.controller.PrivilegeController;
 import com.server.starter.system.dto.PrivilegeDTO;
 import com.server.starter.system.service.PrivilegeService;
 import com.server.starter.system.service.RolePrivilegesService;
@@ -36,6 +35,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
@@ -75,11 +75,10 @@ class PrivilegeControllerTest {
 
     @BeforeEach
     void setUp() {
-        privilegeVO = new PrivilegeVO();
+        privilegeVO = new PrivilegeVO(1L, true, Instant.now());
         privilegeVO.setName("test");
         privilegeVO.setIcon("icon");
         privilegeVO.setPath("path");
-        privilegeVO.setEnabled(true);
         privilegeVO.setDescription("description");
         privilegeVO.setComponent("component");
 

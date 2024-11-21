@@ -33,6 +33,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Instant;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -63,7 +64,7 @@ class OperationLogControllerTest {
     @BeforeEach
     void setUp() {
         // vo
-        operationLogVO = new OperationLogVO();
+        operationLogVO = new OperationLogVO(1L, true, Instant.now());
         operationLogVO.setIp("12.1.3.2");
         operationLogVO.setLocation("test");
         operationLogVO.setBrowser("Chrome");

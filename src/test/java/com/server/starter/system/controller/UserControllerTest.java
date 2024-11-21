@@ -16,7 +16,6 @@
 package com.server.starter.system.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.starter.system.controller.UserController;
 import com.server.starter.system.dto.UserDTO;
 import com.server.starter.system.service.UserService;
 import com.server.starter.system.vo.UserVO;
@@ -35,6 +34,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Instant;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -70,12 +70,13 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        userVO = new UserVO();
+        userVO = new UserVO(1L, true, Instant.now());
         userVO.setUsername("test");
         userVO.setEmail("john@test.com");
 
         userDTO = new UserDTO();
         userDTO.setUsername("test");
+        userDTO.setEmail("john@test.com");
         userDTO.setAccountNonLocked(true);
         userDTO.setAvatar("steven.jpg");
     }
@@ -119,7 +120,8 @@ class UserControllerTest {
         given(this.userService.create(Mockito.any(UserDTO.class))).willReturn(userVO);
 
         mvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(userDTO)).with(csrf().asHeader())).andExpect(status().isCreated())
+                        .content(mapper.writeValueAsString(userDTO)).with(csrf().asHeader()))
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.username").value("test"))
                 .andDo(print()).andReturn();
     }

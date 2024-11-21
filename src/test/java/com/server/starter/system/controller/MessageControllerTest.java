@@ -36,6 +36,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Instant;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.eq;
@@ -72,7 +73,7 @@ class MessageControllerTest {
 
     @BeforeEach
     void setUp() {
-        messageVO = new MessageVO();
+        messageVO = new MessageVO(1L, true, Instant.now());
         messageVO.setTitle("test");
         messageVO.setReceiver("23234");
         messageVO.setContent("content");

@@ -18,7 +18,6 @@ package com.server.starter.system.service.impl;
 import com.server.starter.system.domain.User;
 import com.server.starter.system.dto.UserDTO;
 import com.server.starter.system.repository.UserRepository;
-import com.server.starter.system.service.impl.UserServiceImpl;
 import com.server.starter.system.vo.UserVO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +31,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +53,7 @@ class UserServiceImplTest {
     private UserServiceImpl userService;
 
     private UserDTO userDTO;
+    private User user;
 
     @BeforeEach
     void setUp() {
@@ -61,25 +62,76 @@ class UserServiceImplTest {
         userDTO.setFullName("zhang");
         userDTO.setAvatar("a.jpg");
         userDTO.setEmail("zhang@test.com");
+
+        user = new User();
+        user.setId(1L);
+        user.setUsername("test");
+        user.setLastModifiedDate(Instant.now());
     }
 
     @Test
     void retrieve() {
-        Page<User> page = new PageImpl<>(List.of(Mockito.mock(User.class)));
+        Page<User> page = new PageImpl<>(List.of(user));
 
-        given(this.userRepository.findAll(Mockito.any(Pageable.class))).willReturn(page);
+        given(this.userRepository.findAllByUsernameContaining(Mockito.any(String.class), Mockito.any(Pageable.class))).willReturn(page);
 
         Page<UserVO> voPage = userService.retrieve(0, 2, "id", true, "test");
         Assertions.assertNotNull(voPage.getContent());
     }
 
     @Test
+    void retrieve_username_null() {
+        Page<User> page = new PageImpl<>(List.of(user));
+
+        given(this.userRepository.findAll(Mockito.any(Pageable.class))).willReturn(page);
+
+        Page<UserVO> voPage = userService.retrieve(0, 2, "id", true, null);
+        Assertions.assertNotNull(voPage.getContent());
+    }
+
+    @Test
     void fetch() {
+        given(this.userRepository.findById(Mockito.anyLong())).willReturn(Optional.of(user));
+
+        UserVO vo = userService.fetch(Mockito.anyLong());
+
+        Assertions.assertNotNull(vo);
+    }
+
+    @Test
+    void fetch_error() {
         given(this.userRepository.findById(Mockito.anyLong())).willReturn(Optional.ofNullable(Mockito.mock(User.class)));
 
         UserVO vo = userService.fetch(Mockito.anyLong());
 
         Assertions.assertNotNull(vo);
+    }
+
+    @Test
+    void findByUsername() {
+        given(this.userRepository.findByUsername(Mockito.anyString())).willReturn(Optional.ofNullable(Mockito.mock(User.class)));
+
+        UserVO vo = userService.findByUsername(Mockito.anyString());
+
+        Assertions.assertNotNull(vo);
+    }
+
+    @Test
+    void exists() {
+        given(this.userRepository.existsByUsernameAndIdNot(Mockito.anyString(), Mockito.anyLong())).willReturn(Boolean.TRUE);
+
+        boolean exists = userService.exists("test", 1L);
+
+        Assertions.assertTrue(exists);
+    }
+
+    @Test
+    void exist_false() {
+        given(this.userRepository.existsByUsernameAndIdNot(Mockito.anyString(), Mockito.anyLong())).willReturn(false);
+
+        boolean exists = userService.exists("test", 1L);
+
+        Assertions.assertFalse(exists);
     }
 
     @Test
@@ -104,24 +156,6 @@ class UserServiceImplTest {
 
         verify(userRepository, Mockito.times(1)).save(Mockito.any(User.class));
         Assertions.assertNotNull(vo);
-    }
-
-    @Test
-    void exists() {
-        given(this.userRepository.existsByUsernameAndIdNot(Mockito.anyString(), Mockito.anyLong())).willReturn(Boolean.TRUE);
-
-        boolean exists = userService.exists("test", 1L);
-
-        Assertions.assertTrue(exists);
-    }
-
-    @Test
-    void exist_false() {
-        given(this.userRepository.existsByUsernameAndIdNot(Mockito.anyString(), Mockito.anyLong())).willReturn(false);
-
-        boolean exists = userService.exists("test", 1L);
-
-        Assertions.assertFalse(exists);
     }
 
     @Test

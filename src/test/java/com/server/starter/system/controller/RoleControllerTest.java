@@ -39,6 +39,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 
@@ -82,7 +83,7 @@ class RoleControllerTest {
 
     @BeforeEach
     void setUp() {
-        roleVO = new RoleVO();
+        roleVO = new RoleVO(1L, true, Instant.now());
         roleVO.setName("test");
         roleVO.setDescription("description");
 

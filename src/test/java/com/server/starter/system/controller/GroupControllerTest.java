@@ -38,6 +38,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
@@ -78,7 +79,7 @@ class GroupControllerTest {
 
     @BeforeEach
     void setUp() {
-        groupVO = new GroupVO();
+        groupVO = new GroupVO(1L, true, Instant.now());
         groupVO.setName("test");
 
         groupDTO = new GroupDTO();
