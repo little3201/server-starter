@@ -26,7 +26,7 @@ import java.time.Instant;
  *
  * @author wq li
  */
-public class MessageVO extends MessageBO  implements ReadonlyMetadata {
+public class MessageVO extends MessageBO implements ReadonlyMetadata {
 
     private final Long id;
 

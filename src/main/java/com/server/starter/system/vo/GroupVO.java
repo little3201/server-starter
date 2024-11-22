@@ -25,7 +25,7 @@ import java.time.Instant;
  *
  * @author wq li
  */
-public class GroupVO extends GroupBO  implements ReadonlyMetadata {
+public class GroupVO extends GroupBO implements ReadonlyMetadata {
 
     private final Long id;
 

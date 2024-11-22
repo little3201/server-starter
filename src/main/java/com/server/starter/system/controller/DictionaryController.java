@@ -183,7 +183,7 @@ public class DictionaryController {
      */
     @PreAuthorize("hasAuthority('SCOPE_dictionaries:write')")
     @PatchMapping("/{id}")
-    public ResponseEntity<Boolean> toggleStatus(@PathVariable Long id) {
+    public ResponseEntity<Boolean> enable(@PathVariable Long id) {
         boolean enabled;
         try {
             enabled = dictionaryService.enable(id);

@@ -530,7 +530,7 @@ ON COLUMN operation_logs.user_agent IS '用户代理信息';
 COMMENT
 ON COLUMN operation_logs.status_code IS 'HTTP状态码';
 COMMENT
-ON COLUMN operation_logs.operated_times IS '操作时间';
+ON COLUMN operation_logs.operated_time IS '操作时间';
 COMMENT
 ON COLUMN operation_logs.response_message IS '响应消息';
 COMMENT
@@ -552,6 +552,91 @@ ON COLUMN operation_logs.last_modified_date IS '最后修改时间';
 
 
 -- ----------------------------
+-- Table structure for file_records
+-- ----------------------------
+DROP TABLE IF EXISTS file_records;
+CREATE TABLE file_records
+(
+    id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name               varchar(64)  NOT NULL,
+    type               varchar(255),
+    path               varchar(255),
+    size               float4,
+    description        varchar(255),
+    enabled            bool         NOT NULL DEFAULT true,
+    created_by         varchar(64),
+    created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_modified_by   varchar(64),
+    last_modified_date timestamp(6)
+);
+COMMENT
+ON COLUMN file_records.id IS '主键';
+COMMENT
+ON COLUMN file_records.name IS '名称';
+COMMENT
+ON COLUMN file_records.type IS '类型';
+COMMENT
+ON COLUMN file_records.path IS '路径';
+COMMENT
+ON COLUMN file_records.size IS '大小';
+COMMENT
+ON COLUMN file_records.description IS '描述';
+COMMENT
+ON COLUMN file_records.enabled IS '是否启用';
+COMMENT
+ON COLUMN file_records.created_by IS '创建者';
+COMMENT
+ON COLUMN file_records.created_date IS '创建时间';
+COMMENT
+ON COLUMN file_records.last_modified_by IS '最后修改者';
+COMMENT
+ON COLUMN file_records.last_modified_date IS '最后修改时间';
+COMMENT
+ON TABLE file_records IS '文件记录表';
+
+
+-- ----------------------------
+-- Table structure for schemas
+-- ----------------------------
+DROP TABLE IF EXISTS schemas;
+CREATE TABLE schemas
+(
+    id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name               varchar(64),
+    reference          varchar(127),
+    domain             varchar(64),
+    templates          varchar[],
+    enabled            bool         NOT NULL DEFAULT true,
+    created_by         varchar(64),
+    created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    last_modified_by   varchar(64),
+    last_modified_date timestamp(6)
+);
+COMMENT
+ON COLUMN schemas.id IS '主键，自动生成';
+COMMENT
+ON COLUMN schemas.name IS '表名称';
+COMMENT
+ON COLUMN schemas.reference IS '包引用';
+COMMENT
+ON COLUMN schemas.domain IS '类名';
+COMMENT
+ON COLUMN schemas.templates IS '模板';
+COMMENT
+ON COLUMN schemas.enabled IS '是否启用';
+COMMENT
+ON COLUMN schemas.created_by IS '创建者';
+COMMENT
+ON COLUMN schemas.created_date IS '创建时间';
+COMMENT
+ON COLUMN schemas.last_modified_by IS '最后修改者';
+COMMENT
+ON COLUMN schemas.last_modified_date IS '最后修改时间';
+COMMENT
+ON TABLE schemas IS 'schema配置表';
+
+
+-- ----------------------------
 -- Table structure for fields
 -- ----------------------------
 DROP TABLE IF EXISTS fields;
@@ -565,7 +650,7 @@ CREATE TABLE fields
     field_type         varchar(16),
     form_type          varchar(16),
     ts_type            varchar(16),
-    schema_id          bigint,
+    schema_id          bigint       not null,
     nullable           bool,
     is_unique          bool,
     queryable          bool,
@@ -659,90 +744,6 @@ ON COLUMN scripts.last_modified_date IS '最后修改时间';
 COMMENT
 ON TABLE scripts IS '脚本配置表';
 
--- ----------------------------
--- Table structure for schemas
--- ----------------------------
-DROP TABLE IF EXISTS schemas;
-CREATE TABLE schemas
-(
-    id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name               varchar(64),
-    reference          varchar(127),
-    domain             varchar(64),
-    templates          varchar[],
-    enabled            bool         NOT NULL DEFAULT true,
-    created_by         varchar(64),
-    created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(64),
-    last_modified_date timestamp(6)
-);
-COMMENT
-ON COLUMN schemas.id IS '主键，自动生成';
-COMMENT
-ON COLUMN schemas.name IS '表名称';
-COMMENT
-ON COLUMN schemas.reference IS '包引用';
-COMMENT
-ON COLUMN schemas.domain IS '类名';
-COMMENT
-ON COLUMN schemas.templates IS '模板';
-COMMENT
-ON COLUMN schemas.enabled IS '是否启用';
-COMMENT
-ON COLUMN schemas.created_by IS '创建者';
-COMMENT
-ON COLUMN schemas.created_date IS '创建时间';
-COMMENT
-ON COLUMN schemas.last_modified_by IS '最后修改者';
-COMMENT
-ON COLUMN schemas.last_modified_date IS '最后修改时间';
-COMMENT
-ON TABLE schemas IS 'schema配置表';
-
-
--- ----------------------------
--- Table structure for file_records
--- ----------------------------
-DROP TABLE IF EXISTS file_records;
-CREATE TABLE file_records
-(
-    id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name               varchar(64)  NOT NULL,
-    type               varchar(255),
-    path               varchar(255),
-    size               float4,
-    description        varchar(255),
-    enabled            bool         NOT NULL DEFAULT true,
-    created_by         varchar(64),
-    created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    last_modified_by   varchar(64),
-    last_modified_date timestamp(6)
-);
-COMMENT
-ON COLUMN file_records.id IS '主键';
-COMMENT
-ON COLUMN file_records.name IS '名称';
-COMMENT
-ON COLUMN file_records.type IS '类型';
-COMMENT
-ON COLUMN file_records.path IS '路径';
-COMMENT
-ON COLUMN file_records.size IS '大小';
-COMMENT
-ON COLUMN file_records.description IS '描述';
-COMMENT
-ON COLUMN file_records.enabled IS '是否启用';
-COMMENT
-ON COLUMN file_records.created_by IS '创建者';
-COMMENT
-ON COLUMN file_records.created_date IS '创建时间';
-COMMENT
-ON COLUMN file_records.last_modified_by IS '最后修改者';
-COMMENT
-ON COLUMN file_records.last_modified_date IS '最后修改时间';
-COMMENT
-ON TABLE file_records IS '文件记录表';
-
 
 -- ----------------------------
 -- Table structure for templates
@@ -751,11 +752,11 @@ DROP TABLE IF EXISTS templates;
 CREATE TABLE templates
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    name               varchar(64) NOT NULL,
-    suffix             varchar(16) NOT NULL,
+    name               varchar(64)  NOT NULL,
+    suffix             varchar(16)  NOT NULL,
     content            text,
     type               bigint,
-    version            varchar(16) NOT NULL,
+    version            varchar(16)  NOT NULL,
     enabled            bool         NOT NULL DEFAULT true,
     created_by         varchar(64),
     created_date       timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,

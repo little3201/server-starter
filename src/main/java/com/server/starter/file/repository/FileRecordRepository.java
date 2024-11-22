@@ -18,16 +18,22 @@ package com.server.starter.file.repository;
 
 
 import com.server.starter.file.domain.FileRecord;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-/**
- * file repository.
- *
- * @author wq li
- */
 @Repository
 public interface FileRecordRepository extends CrudRepository<FileRecord, Long>,
         PagingAndSortingRepository<FileRecord, Long> {
+
+    /**
+     * Finds all records with name containing the specified string.
+     *
+     * @param name     The name filter for the templates.
+     * @param pageable The pagination information.
+     * @return A paginated list of templates.
+     */
+    Page<FileRecord> findAllByNameContaining(String name, Pageable pageable);
 }

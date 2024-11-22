@@ -23,6 +23,7 @@ import com.server.starter.file.vo.FileRecordVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -42,7 +43,10 @@ public class FileRecordServiceImpl implements FileRecordService {
     @Override
     public Page<FileRecordVO> retrieve(int page, int size, String sortBy, boolean descending, String name) {
         Pageable pageable = pageable(page, size, sortBy, descending);
-
+        if (StringUtils.hasText(name)) {
+            return fileRecordRepository.findAllByNameContaining(name, pageable)
+                    .map(fileRecord -> convertToVO(fileRecord, FileRecordVO.class));
+        }
         return fileRecordRepository.findAll(pageable)
                 .map(fileRecord -> convertToVO(fileRecord, FileRecordVO.class));
     }

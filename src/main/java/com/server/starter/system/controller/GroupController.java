@@ -191,7 +191,7 @@ public class GroupController {
      */
     @PreAuthorize("hasAuthority('SCOPE_groups:write')")
     @PatchMapping("/{id}")
-    public ResponseEntity<Boolean> toggleStatus(@PathVariable Long id) {
+    public ResponseEntity<Boolean> enable(@PathVariable Long id) {
         boolean enabled;
         try {
             enabled = groupService.enable(id);

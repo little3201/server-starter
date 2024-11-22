@@ -21,9 +21,7 @@ import com.server.starter.system.repository.UserRepository;
 import com.server.starter.system.service.UserService;
 import com.server.starter.system.vo.UserVO;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -52,9 +50,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Page<UserVO> retrieve(int page, int size, String sortBy, boolean descending, String name) {
-        Sort sort = Sort.by(descending ? Sort.Direction.DESC : Sort.Direction.ASC,
-                StringUtils.hasText(sortBy) ? sortBy : "id");
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = pageable(page, size, sortBy, descending);
 
         if (StringUtils.hasText(name)) {
             return userRepository.findAllByUsernameContaining(name, pageable)
@@ -118,12 +114,11 @@ public class UserServiceImpl implements UserService {
     public UserVO modify(Long id, UserDTO dto) {
         Assert.notNull(id, "id must not be null.");
 
-        return userRepository.findById(id)
-                .map(existing -> {
-                    User user = convert(dto, existing);
-                    user = userRepository.save(user);
-                    return convertToVO(user, UserVO.class);
-                }).orElseThrow();
+        return userRepository.findById(id).map(existing -> {
+            User user = convert(dto, existing);
+            user = userRepository.save(user);
+            return convertToVO(user, UserVO.class);
+        }).orElseThrow();
     }
 
     /**

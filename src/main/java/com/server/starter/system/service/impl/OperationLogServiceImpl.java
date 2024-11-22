@@ -29,8 +29,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
-import java.util.Objects;
-
 /**
  * operation log service impl.
  *
@@ -59,14 +57,25 @@ public class OperationLogServiceImpl implements OperationLogService {
                 StringUtils.hasText(sortBy) ? sortBy : "id");
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        return operationLogRepository.findAll(pageable).map(this::convert);
+        return operationLogRepository.findAll(pageable)
+                .map(operationLog -> {
+                    OperationLogVO vo = convertToVO(operationLog, OperationLogVO.class);
+                    vo.setIp(operationLog.getIp().toString());
+                    return vo;
+                });
     }
 
     @Override
     public OperationLogVO fetch(Long id) {
         Assert.notNull(id, "id must not be null.");
 
-        return operationLogRepository.findById(id).map(this::convert).orElse(null);
+        return operationLogRepository.findById(id)
+                .map(operationLog -> {
+                    OperationLogVO vo = convertToVO(operationLog, OperationLogVO.class);
+                    vo.setIp(operationLog.getIp().toString());
+                    return vo;
+                })
+                .orElse(null);
     }
 
     /**
@@ -77,7 +86,7 @@ public class OperationLogServiceImpl implements OperationLogService {
         OperationLog operationLog = convertToDomain(dto, OperationLog.class);
 
         operationLogRepository.save(operationLog);
-        return this.convert(operationLog);
+        return convertToVO(operationLog, OperationLogVO.class);
     }
 
     @Override
@@ -86,9 +95,4 @@ public class OperationLogServiceImpl implements OperationLogService {
         operationLogRepository.deleteById(id);
     }
 
-    private OperationLogVO convert(OperationLog operationLog) {
-        OperationLogVO vo = convertToVO(operationLog, OperationLogVO.class);
-        vo.setIp(Objects.nonNull(operationLog.getIp()) ? operationLog.getIp().toString() : null);
-        return vo;
-    }
 }

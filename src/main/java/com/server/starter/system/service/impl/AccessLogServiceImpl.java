@@ -72,7 +72,7 @@ public class AccessLogServiceImpl implements AccessLogService {
         AccessLog accessLog = convertToDomain(dto, AccessLog.class);
 
         accessLogRepository.save(accessLog);
-        return this.convert(accessLog);
+        return convertToVO(accessLog, AccessLogVO.class);
     }
 
     @Override

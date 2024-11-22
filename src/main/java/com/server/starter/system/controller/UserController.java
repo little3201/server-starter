@@ -185,7 +185,7 @@ public class UserController {
      */
     @PreAuthorize("hasAuthority('SCOPE_users:write')")
     @PatchMapping("/{id}")
-    public ResponseEntity<Boolean> toggleStatus(@PathVariable Long id) {
+    public ResponseEntity<Boolean> enable(@PathVariable Long id) {
         boolean enabled;
         try {
             enabled = userService.enable(id);

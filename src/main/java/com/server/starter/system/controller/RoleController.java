@@ -177,7 +177,7 @@ public class RoleController {
      */
     @PreAuthorize("hasAuthority('SCOPE_roles:write')")
     @PatchMapping("/{id}")
-    public ResponseEntity<Boolean> toggleStatus(@PathVariable Long id) {
+    public ResponseEntity<Boolean> enable(@PathVariable Long id) {
         boolean enabled;
         try {
             enabled = roleService.enable(id);

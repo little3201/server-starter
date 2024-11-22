@@ -21,9 +21,7 @@ import com.server.starter.system.repository.RoleRepository;
 import com.server.starter.system.service.RoleService;
 import com.server.starter.system.vo.RoleVO;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -52,12 +50,12 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public Page<RoleVO> retrieve(int page, int size, String sortBy, boolean descending, String name) {
-        Sort sort = Sort.by(descending ? Sort.Direction.DESC : Sort.Direction.ASC,
-                StringUtils.hasText(sortBy) ? sortBy : "id");
-        Pageable pageable = PageRequest.of(page, size, sort);
-
-        return roleRepository.findAll(pageable)
-                .map(role -> convertToVO(role, RoleVO.class));
+        Pageable pageable = pageable(page, size, sortBy, descending);
+        if (StringUtils.hasText(name)) {
+            return roleRepository.findAllByNameContaining(name, pageable)
+                    .map(role -> convertToVO(role, RoleVO.class));
+        }
+        return roleRepository.findAll(pageable).map(role -> convertToVO(role, RoleVO.class));
     }
 
     /**

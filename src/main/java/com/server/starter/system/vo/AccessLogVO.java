@@ -26,7 +26,7 @@ import java.time.Instant;
  *
  * @author wq li
  */
-public class AccessLogVO extends AccessLogBO  implements ReadonlyMetadata {
+public class AccessLogVO extends AccessLogBO implements ReadonlyMetadata {
 
     private final Long id;
 

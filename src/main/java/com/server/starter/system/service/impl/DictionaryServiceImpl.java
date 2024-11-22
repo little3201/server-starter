@@ -67,7 +67,8 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
         Assert.notNull(id, "id must not be null.");
 
         return dictionaryRepository.findById(id)
-                .map(dictionary -> convertToVO(dictionary, DictionaryVO.class)).orElse(null);
+                .map(dictionary -> convertToVO(dictionary, DictionaryVO.class))
+                .orElse(null);
     }
 
     @Override
