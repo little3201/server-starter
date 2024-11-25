@@ -26,7 +26,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.jdbc.repository.config.MyBatisJdbcConfiguration;
 
 import javax.sql.DataSource;
-import java.io.IOException;
 
 /**
  * Mybatis configuration
@@ -39,7 +38,7 @@ import java.io.IOException;
 public class MyBatisConfiguration {
 
     @Bean
-    SqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource) throws IOException {
+    SqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource) {
         // Configure MyBatis here
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
