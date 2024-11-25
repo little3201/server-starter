@@ -603,6 +603,7 @@ CREATE TABLE schemas
 (
     id                 bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name               varchar(64),
+    comment            varchar(64),
     reference          varchar(127),
     domain             varchar(64),
     templates          varchar[],
@@ -615,11 +616,13 @@ CREATE TABLE schemas
 COMMENT
 ON COLUMN schemas.id IS '主键，自动生成';
 COMMENT
-ON COLUMN schemas.name IS '表名称';
+ON COLUMN schemas.name IS '表名';
 COMMENT
-ON COLUMN schemas.reference IS '包引用';
+ON COLUMN schemas.name IS '注释';
 COMMENT
-ON COLUMN schemas.domain IS '类名';
+ON COLUMN schemas.reference IS '引用路径';
+COMMENT
+ON COLUMN schemas.domain IS '领域名';
 COMMENT
 ON COLUMN schemas.templates IS '模板';
 COMMENT

@@ -103,9 +103,9 @@ public class RoleServiceImpl implements RoleService {
     public RoleVO modify(Long id, RoleDTO dto) {
         Assert.notNull(id, "id must not be null.");
         return roleRepository.findById(id).map(existing -> {
-                    Role role = convert(dto, existing);
-                    role = roleRepository.save(role);
-                    return convertToVO(role, RoleVO.class);
+                    existing = convert(dto, existing);
+                    existing = roleRepository.save(existing);
+                    return convertToVO(existing, RoleVO.class);
                 })
                 .orElseThrow();
     }

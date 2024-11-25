@@ -115,9 +115,9 @@ public class UserServiceImpl implements UserService {
         Assert.notNull(id, "id must not be null.");
 
         return userRepository.findById(id).map(existing -> {
-            User user = convert(dto, existing);
-            user = userRepository.save(user);
-            return convertToVO(user, UserVO.class);
+            existing = convert(dto, existing);
+            existing = userRepository.save(existing);
+            return convertToVO(existing, UserVO.class);
         }).orElseThrow();
     }
 

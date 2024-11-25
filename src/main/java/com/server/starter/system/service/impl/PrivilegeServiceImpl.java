@@ -141,9 +141,9 @@ public class PrivilegeServiceImpl extends ServletAbstractTreeNodeService<Privile
     public PrivilegeVO modify(Long id, PrivilegeDTO dto) {
         Assert.notNull(id, "id must not be null.");
         return privilegeRepository.findById(id).map(existing -> {
-                    Privilege privilege = convert(dto, existing);
-                    privilege = privilegeRepository.save(privilege);
-                    return convertToVO(privilege, PrivilegeVO.class);
+                    existing = convert(dto, existing);
+                    existing = privilegeRepository.save(existing);
+                    return convertToVO(existing, PrivilegeVO.class);
                 })
                 .orElseThrow();
     }

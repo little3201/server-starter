@@ -116,9 +116,9 @@ public class DictionaryServiceImpl extends ServletAbstractTreeNodeService<Dictio
     public DictionaryVO modify(Long id, DictionaryDTO dto) {
         Assert.notNull(id, "id must not be null.");
         return dictionaryRepository.findById(id).map(existing -> {
-                    Dictionary dictionary = convert(dto, existing);
-                    dictionary = dictionaryRepository.save(dictionary);
-                    return convertToVO(dictionary, DictionaryVO.class);
+                    existing = convert(dto, existing);
+                    existing = dictionaryRepository.save(existing);
+                    return convertToVO(existing, DictionaryVO.class);
                 })
                 .orElseThrow();
     }

@@ -114,9 +114,9 @@ public class GroupServiceImpl extends ServletAbstractTreeNodeService<Group> impl
     public GroupVO modify(Long id, GroupDTO dto) {
         Assert.notNull(id, "id must not be null.");
         return groupRepository.findById(id).map(existing -> {
-                    Group group = convert(dto, existing);
-                    group = groupRepository.save(group);
-                    return convertToVO(group, GroupVO.class);
+                    existing = convert(dto, existing);
+                    existing = groupRepository.save(existing);
+                    return convertToVO(existing, GroupVO.class);
                 })
                 .orElseThrow();
     }

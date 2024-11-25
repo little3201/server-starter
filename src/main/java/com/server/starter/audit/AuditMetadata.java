@@ -55,27 +55,27 @@ public abstract class AuditMetadata implements Auditable<String, Long, Instant> 
     /**
      * The username of the user who created the entity. Not updatable after the entity is created.
      */
-    @Column("created_by")
+    @Column(value = "created_by")
     private String createdBy;
 
     /**
      * The timestamp when the entity was created. Not updatable after the entity is created.
      */
     @CreatedDate
-    @Column("created_date")
+    @Column(value = "created_date")
     private Instant createdDate;
 
     /**
      * The username of the user who last modified the entity. Only updatable when the entity is modified.
      */
-    @Column("last_modified_by")
+    @Column(value = "last_modified_by")
     private String lastModifiedBy;
 
     /**
      * The timestamp when the entity was last modified. Only updatable when the entity is modified.
      */
     @LastModifiedDate
-    @Column("last_modified_date")
+    @Column(value = "last_modified_date")
     private Instant lastModifiedDate;
 
     /**
