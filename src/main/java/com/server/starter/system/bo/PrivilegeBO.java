@@ -49,7 +49,7 @@ public abstract class PrivilegeBO {
     /**
      * 图标
      */
-    @NotBlank(message = "icon must not be blank.")
+    @NotBlank(message = "icon must not be empty.")
     private String icon;
 
     private Set<String> actions;

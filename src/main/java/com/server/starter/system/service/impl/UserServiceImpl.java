@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserVO findByUsername(String username) {
-        Assert.hasText(username, "username must not be blank.");
+        Assert.hasText(username, "username must not be empty.");
 
         return userRepository.findByUsername(username)
                 .map(user -> convertToVO(user, UserVO.class)).orElse(null);
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean exists(String username, Long id) {
-        Assert.hasText(username, "username must not be blank.");
+        Assert.hasText(username, "username must not be empty.");
         if (id == null) {
             return userRepository.existsByUsername(username);
         }

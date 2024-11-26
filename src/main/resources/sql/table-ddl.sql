@@ -618,7 +618,7 @@ ON COLUMN schemas.id IS '主键，自动生成';
 COMMENT
 ON COLUMN schemas.name IS '表名';
 COMMENT
-ON COLUMN schemas.name IS '注释';
+ON COLUMN schemas.comment IS '注释';
 COMMENT
 ON COLUMN schemas.reference IS '引用路径';
 COMMENT
